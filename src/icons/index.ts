@@ -1,0 +1,11 @@
+export { DashboardIcon } from './DashboardIcon';
+export { VacancyIcon } from './VacancyIcon';
+export { CandidateIcon } from './CandidateIcon';
+export { TalentPoolIcon } from './TalentPoolIcon';
+export { MailIcon } from './MailIcon';
+export { AnalyticsIcon } from './AnalyticsIcon';
+export { CompanyIcon } from './CompanyIcon';
+export { CalendarIcon } from './CalendarIcon';
+export { NotesIcon } from './NotesIcon';
+export { TasksIcon } from './TasksIcon';
+export { ActivityIcon } from './ActivityIcon';

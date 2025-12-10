@@ -1,0 +1,146 @@
+import React from 'react';
+import { PipelineCandidateCard } from './PipelineCandidateCard';
+import { mockStages, mockCandidates } from '../utils/mockPipeline';
+import type { PipelineCandidate } from '../types/funnel';
+
+interface PipelineViewProps {
+  title?: string;
+}
+
+export const PipelineView: React.FC<PipelineViewProps> = ({ title = "Pipeline Funnel" }) => {
+  // Group candidates by stage
+  const candidatesByStage = mockStages.reduce((acc, stage) => {
+    acc[stage.id] = mockCandidates.filter(candidate => candidate.currentStageId === stage.id);
+    return acc;
+  }, {} as Record<string, PipelineCandidate[]>);
+
+  return (
+    <div style={{ marginTop: '32px' }}>
+      {/* Title */}
+      <h2 style={{
+        fontSize: '20px',
+        fontWeight: '600',
+        color: '#111827',
+        marginBottom: '16px'
+      }}>
+        {title}
+      </h2>
+
+      {/* Pipeline Container */}
+      <div style={{
+        display: 'flex',
+        gap: '16px',
+        overflowX: 'auto',
+        paddingBottom: '16px',
+        minHeight: '400px'
+      }}>
+        {mockStages.map((stage) => {
+          const stageCandidates = candidatesByStage[stage.id] || [];
+          
+          return (
+            <div
+              key={stage.id}
+              style={{
+                minWidth: '260px',
+                backgroundColor: '#f3f4f6',
+                borderRadius: '8px',
+                padding: '12px',
+                flexShrink: 0,
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
+              {/* Stage Header */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '12px',
+                paddingBottom: '8px',
+                borderBottom: '1px solid #e5e7eb'
+              }}>
+                <h3 style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#111827',
+                  margin: 0
+                }}>
+                  {stage.name}
+                </h3>
+                
+                {/* Candidate Count Badge */}
+                <span style={{
+                  backgroundColor: '#e5e7eb',
+                  color: '#374151',
+                  fontSize: '12px',
+                  fontWeight: '500',
+                  padding: '2px 8px',
+                  borderRadius: '12px',
+                  minWidth: '24px',
+                  textAlign: 'center'
+                }}>
+                  {stageCandidates.length}
+                </span>
+              </div>
+
+              {/* Candidates List */}
+              <div style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column'
+              }}>
+                {stageCandidates.length === 0 ? (
+                  <div style={{
+                    fontSize: '12px',
+                    color: '#9ca3af',
+                    fontStyle: 'italic',
+                    textAlign: 'center',
+                    padding: '20px 0'
+                  }}>
+                    Geen kandidaten
+                  </div>
+                ) : (
+                  stageCandidates.map((candidate) => (
+                    <PipelineCandidateCard
+                      key={candidate.id}
+                      candidate={candidate}
+                      stageName={stage.name}
+                    />
+                  ))
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Summary Stats */}
+      <div style={{
+        marginTop: '24px',
+        padding: '16px',
+        backgroundColor: '#f9fafb',
+        borderRadius: '8px',
+        border: '1px solid #e5e7eb'
+      }}>
+        <div style={{
+          fontSize: '14px',
+          fontWeight: '500',
+          color: '#111827',
+          marginBottom: '8px'
+        }}>
+          Pipeline Overzicht
+        </div>
+        <div style={{
+          display: 'flex',
+          gap: '24px',
+          fontSize: '13px',
+          color: '#6b7280'
+        }}>
+          <span>Totaal kandidaten: <strong style={{ color: '#111827' }}>{mockCandidates.length}</strong></span>
+          <span>Actieve stages: <strong style={{ color: '#111827' }}>{mockStages.length}</strong></span>
+          <span>Gemiddeld per stage: <strong style={{ color: '#111827' }}>{Math.round(mockCandidates.length / mockStages.length)}</strong></span>
+        </div>
+      </div>
+    </div>
+  );
+};
