@@ -87,7 +87,7 @@ export const MailboxPage: React.FC = () => {
   return (
     <div style={{ display: 'flex', height: '100%' }}>
       {/* Sidebar */}
-      <div style={{ width: '256px', backgroundColor: 'white', borderRight: '1px solid #e5e7eb', padding: '16px' }}>
+      <div style={{ width: '256px', backgroundColor: 'var(--color-card-bg)', borderRight: '1px solid var(--color-border)', padding: '16px' }}>
         <button className="btn btn-primary" style={{ width: '100%', marginBottom: '16px' }}>
           Nieuwe e-mail
         </button>
@@ -104,8 +104,8 @@ export const MailboxPage: React.FC = () => {
                 padding: '12px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: selectedCategory === category.id ? '#dbeafe' : 'transparent',
-                color: selectedCategory === category.id ? '#2563eb' : '#374151',
+                backgroundColor: selectedCategory === category.id ? 'var(--color-primary-bg)' : 'transparent',
+                color: selectedCategory === category.id ? 'var(--color-primary)' : 'var(--color-text)',
                 fontWeight: selectedCategory === category.id ? '500' : 'normal',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s ease',
@@ -113,7 +113,7 @@ export const MailboxPage: React.FC = () => {
               }}
               onMouseEnter={(e) => {
                 if (selectedCategory !== category.id) {
-                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                  e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
                 }
               }}
               onMouseLeave={(e) => {
@@ -128,10 +128,10 @@ export const MailboxPage: React.FC = () => {
               </div>
               <span style={{ 
                 fontSize: '12px', 
-                backgroundColor: '#f3f4f6', 
+                backgroundColor: 'var(--color-bg-secondary)', 
                 padding: '2px 8px', 
                 borderRadius: '12px',
-                color: '#374151'
+                color: 'var(--color-text)'
               }}>
                 {category.count}
               </span>
@@ -141,9 +141,9 @@ export const MailboxPage: React.FC = () => {
       </div>
 
       {/* Email List */}
-      <div style={{ flex: 1, backgroundColor: 'white' }}>
-        <div style={{ borderBottom: '1px solid #e5e7eb', padding: '16px' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
+      <div style={{ flex: 1, backgroundColor: 'var(--color-card-bg)' }}>
+        <div style={{ borderBottom: '1px solid var(--color-border)', padding: '16px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--color-text)', margin: 0 }}>
             {categories.find(c => c.id === selectedCategory)?.name}
           </h2>
         </div>
@@ -155,16 +155,16 @@ export const MailboxPage: React.FC = () => {
               onClick={() => markAsRead(email.id)}
               style={{
                 padding: '16px',
-                borderBottom: '1px solid #e5e7eb',
+                borderBottom: '1px solid var(--color-border)',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s ease',
-                backgroundColor: !email.isRead ? '#dbeafe' : 'transparent'
+                backgroundColor: !email.isRead ? 'var(--color-primary-bg)' : 'transparent'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = !email.isRead ? '#dbeafe' : '#f3f4f6';
+                e.currentTarget.style.backgroundColor = !email.isRead ? 'var(--color-primary-bg)' : 'var(--color-bg-secondary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = !email.isRead ? '#dbeafe' : 'transparent';
+                e.currentTarget.style.backgroundColor = !email.isRead ? 'var(--color-primary-bg)' : 'transparent';
               }}
             >
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
@@ -191,13 +191,13 @@ export const MailboxPage: React.FC = () => {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{ 
                           fontWeight: '500', 
-                          color: !email.isRead ? '#111827' : '#374151' 
+                          color: !email.isRead ? 'var(--color-text)' : 'var(--color-text-muted)' 
                         }}>
                           {email.sender}
                         </span>
                         {!email.isRead && (
                           <span style={{ 
-                            backgroundColor: '#2563eb', 
+                            backgroundColor: 'var(--color-primary)', 
                             color: 'white', 
                             fontSize: '12px', 
                             padding: '2px 8px', 
@@ -208,19 +208,19 @@ export const MailboxPage: React.FC = () => {
                           </span>
                         )}
                       </div>
-                      <span style={{ fontSize: '14px', color: '#6b7280' }}>{email.time}</span>
+                      <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>{email.time}</span>
                     </div>
                     
                     <div style={{ 
                       marginBottom: '4px',
                       fontWeight: !email.isRead ? '600' : 'normal',
-                      color: '#111827',
+                      color: 'var(--color-text)',
                       fontSize: '14px'
                     }}>
                       {email.subject}
                     </div>
                     
-                    <div style={{ fontSize: '14px', color: '#6b7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div style={{ fontSize: '14px', color: 'var(--color-text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {email.preview}
                     </div>
                   </div>

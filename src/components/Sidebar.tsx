@@ -6,13 +6,15 @@ import {
   CandidateIcon,
   TalentPoolIcon,
   MailIcon,
-  AnalyticsIcon
+  AnalyticsIcon,
+  SettingsIcon
 } from '../icons';
 import type { CRMPage } from '../types';
 
 interface SidebarProps {
   activePage?: CRMPage;
   onChangePage?: (page: CRMPage) => void;
+  className?: string;
 }
 
 const sidebarItems = [
@@ -50,23 +52,29 @@ const sidebarItems = [
     id: 'analytics' as CRMPage,
     label: 'Analytics',
     icon: AnalyticsIcon,
+  },
+  {
+    id: 'settings' as CRMPage,
+    label: 'Instellingen',
+    icon: SettingsIcon,
   }
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ 
   activePage = 'dashboard',
-  onChangePage 
+  onChangePage,
+  className
 }) => {
   const handleItemClick = (page: CRMPage) => {
     onChangePage?.(page);
   };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${className || ''}`} style={{ backgroundColor: 'var(--color-sidebar-bg)' }}>
       {/* Header */}
-      <div style={{ padding: '16px', borderBottom: '1px solid #374151' }}>
-        <h1 style={{ fontSize: '18px', fontWeight: 'bold', color: 'white', margin: 0 }}>
-          CRM-ATS
+      <div style={{ padding: '16px', borderBottom: '1px solid var(--color-sidebar-border)' }}>
+        <h1 style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--color-sidebar-text)', margin: 0 }}>
+          ATS
         </h1>
       </div>
 
@@ -86,8 +94,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 alignItems: 'center', 
                 gap: '12px',
                 padding: '12px 16px',
-                color: 'white',
-                backgroundColor: isActive ? '#2563eb' : 'transparent',
+                color: 'var(--color-sidebar-text)',
+                backgroundColor: isActive ? 'var(--color-sidebar-active)' : 'transparent',
                 borderRadius: '6px',
                 border: 'none',
                 cursor: 'pointer',
@@ -98,7 +106,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.backgroundColor = '#374151';
+                  e.currentTarget.style.backgroundColor = 'var(--color-sidebar-hover)';
                 }
               }}
               onMouseLeave={(e) => {

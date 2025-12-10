@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { VacancyDetailHeader } from '../components/VacancyDetailHeader';
 import { VacancyDetailInfo } from '../components/VacancyDetailInfo';
 import { VacancyPipeline } from '../components/VacancyPipeline';
 import { vacancies } from '../utils/mockVacancies';
 
 interface VacancyDetailPageProps {
-  vacancyId: string;
-  onChangePage: (page: 'vacancies') => void;
+  vacancyId?: string;
+  onChangePage?: (page: 'vacancies') => void;
 }
 
-export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId, onChangePage }) => {
+export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId: propVacancyId, onChangePage }) => {
+  const { id: paramId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'info' | 'funnel'>('funnel');
+
+  // Use prop or URL param
+  const vacancyId = propVacancyId || paramId || '';
 
   // Find the vacancy by ID
   const vacancy = vacancies.find(v => v.id === vacancyId);
@@ -20,7 +26,7 @@ export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId,
       <div style={{
         textAlign: 'center',
         padding: '40px',
-        color: '#6b7280',
+        color: 'var(--color-text-muted)',
         fontSize: '16px'
       }}>
         Vacature niet gevonden
@@ -43,12 +49,12 @@ export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId,
     <div>
       {/* Back Button */}
       <button
-        onClick={() => onChangePage('vacancies')}
+        onClick={() => onChangePage ? onChangePage('vacancies') : navigate('/vacancies')}
         style={{
           padding: '8px 16px',
           backgroundColor: 'transparent',
-          color: '#2563eb',
-          border: '1px solid #d1d5db',
+          color: 'var(--color-primary)',
+          border: '1px solid var(--color-border)',
           borderRadius: '6px',
           fontSize: '14px',
           fontWeight: '500',
@@ -57,12 +63,12 @@ export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId,
           transition: 'all 0.2s ease'
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = '#eff6ff';
-          e.currentTarget.style.borderColor = '#2563eb';
+          e.currentTarget.style.backgroundColor = 'var(--color-primary-bg)';
+          e.currentTarget.style.borderColor = 'var(--color-primary)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.backgroundColor = 'transparent';
-          e.currentTarget.style.borderColor = '#d1d5db';
+          e.currentTarget.style.borderColor = 'var(--color-border)';
         }}
       >
         ← Terug naar vacatures
@@ -72,7 +78,7 @@ export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId,
       <h1 style={{
         fontSize: '24px',
         fontWeight: 'bold',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '24px'
       }}>
         Vacaturedetails
@@ -83,7 +89,7 @@ export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId,
 
       {/* Tab Navigation */}
       <div style={{
-        borderBottom: '1px solid #e5e7eb',
+        borderBottom: '1px solid var(--color-border)',
         marginBottom: '24px'
       }}>
         <div style={{ display: 'flex', gap: '32px' }}>
@@ -93,22 +99,22 @@ export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId,
               padding: '12px 0',
               fontSize: '14px',
               fontWeight: activeTab === 'info' ? '600' : '400',
-              color: activeTab === 'info' ? '#111827' : '#6b7280',
+              color: activeTab === 'info' ? 'var(--color-text)' : 'var(--color-text-muted)',
               backgroundColor: 'transparent',
               border: 'none',
-              borderBottom: activeTab === 'info' ? '2px solid #2563eb' : '2px solid transparent',
+              borderBottom: activeTab === 'info' ? '2px solid var(--color-primary)' : '2px solid transparent',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               outline: 'none'
             }}
             onMouseEnter={(e) => {
               if (activeTab !== 'info') {
-                e.currentTarget.style.color = '#374151';
+                e.currentTarget.style.color = 'var(--color-text)';
               }
             }}
             onMouseLeave={(e) => {
               if (activeTab !== 'info') {
-                e.currentTarget.style.color = '#6b7280';
+                e.currentTarget.style.color = 'var(--color-text-muted)';
               }
             }}
           >
@@ -121,22 +127,22 @@ export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId,
               padding: '12px 0',
               fontSize: '14px',
               fontWeight: activeTab === 'funnel' ? '600' : '400',
-              color: activeTab === 'funnel' ? '#111827' : '#6b7280',
+              color: activeTab === 'funnel' ? 'var(--color-text)' : 'var(--color-text-muted)',
               backgroundColor: 'transparent',
               border: 'none',
-              borderBottom: activeTab === 'funnel' ? '2px solid #2563eb' : '2px solid transparent',
+              borderBottom: activeTab === 'funnel' ? '2px solid var(--color-primary)' : '2px solid transparent',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               outline: 'none'
             }}
             onMouseEnter={(e) => {
               if (activeTab !== 'funnel') {
-                e.currentTarget.style.color = '#374151';
+                e.currentTarget.style.color = 'var(--color-text)';
               }
             }}
             onMouseLeave={(e) => {
               if (activeTab !== 'funnel') {
-                e.currentTarget.style.color = '#6b7280';
+                e.currentTarget.style.color = 'var(--color-text-muted)';
               }
             }}
           >

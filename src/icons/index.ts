@@ -9,3 +9,5 @@ export { CalendarIcon } from './CalendarIcon';
 export { NotesIcon } from './NotesIcon';
 export { TasksIcon } from './TasksIcon';
 export { ActivityIcon } from './ActivityIcon';
+export { EvaluationIcon } from './EvaluationIcon';
+export { SettingsIcon } from './SettingsIcon';

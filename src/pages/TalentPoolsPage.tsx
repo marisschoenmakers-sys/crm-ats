@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { TalentPool } from '../types';
 
 const mockTalentPools: TalentPool[] = [
@@ -53,29 +54,36 @@ const mockTalentPools: TalentPool[] = [
 ];
 
 export const TalentPoolsPage: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' }}>Talentpools</h1>
-      <p style={{ color: '#6b7280', marginBottom: '24px' }}>Beheer uw talentpools.</p>
+      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--color-text)' }}>Talentpools</h1>
+      <p style={{ color: 'var(--color-text-muted)', marginBottom: '24px' }}>Beheer uw talentpools.</p>
       
       {/* Talent Pools List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {mockTalentPools.map((pool) => (
-          <div key={pool.id} className="card card-hover p-6">
+          <div 
+            key={pool.id} 
+            className="card card-hover p-6"
+            onClick={() => navigate(`/talentpools/${pool.id}`)}
+            style={{ cursor: 'pointer' }}
+          >
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
               <div style={{ flex: 1 }}>
-                <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--color-text)', marginBottom: '8px' }}>
                   {pool.name}
                 </h3>
-                <p style={{ color: '#6b7280', lineHeight: '1.5', fontSize: '14px' }}>
+                <p style={{ color: 'var(--color-text-muted)', lineHeight: '1.5', fontSize: '14px' }}>
                   {pool.description}
                 </p>
               </div>
               
               <div style={{ marginLeft: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ 
-                  backgroundColor: '#dbeafe', 
-                  color: '#1e40af', 
+                  backgroundColor: 'var(--color-primary-bg)', 
+                  color: 'var(--color-primary)', 
                   borderRadius: '8px', 
                   padding: '8px 16px', 
                   minWidth: '100px', 

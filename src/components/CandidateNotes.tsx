@@ -28,11 +28,11 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       {/* Header */}
       <div style={{
@@ -44,7 +44,7 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
         <h3 style={{
           fontSize: '18px',
           fontWeight: '600',
-          color: '#111827',
+          color: 'var(--color-text)',
           margin: 0
         }}>
           Notities ({notes.length})
@@ -55,9 +55,9 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
       <form onSubmit={handleSubmit} style={{
         marginBottom: '24px',
         padding: '16px',
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'var(--color-bg-secondary)',
         borderRadius: '8px',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <div style={{ marginBottom: '12px' }}>
           <textarea
@@ -68,10 +68,11 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
             style={{
               width: '100%',
               padding: '12px',
-              border: '1px solid #d1d5db',
+              border: '1px solid var(--color-input-border)',
               borderRadius: '6px',
               fontSize: '14px',
-              color: '#111827',
+              color: 'var(--color-text)',
+              backgroundColor: 'var(--color-input-bg)',
               resize: 'vertical',
               fontFamily: 'inherit'
             }}
@@ -84,8 +85,8 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
             disabled={!newNoteContent.trim()}
             style={{
               padding: '8px 16px',
-              backgroundColor: newNoteContent.trim() ? '#2563eb' : '#9ca3af',
-              color: 'white',
+              backgroundColor: newNoteContent.trim() ? 'var(--color-primary)' : 'var(--color-text-muted)',
+              color: 'var(--color-sidebar-text)',
               border: 'none',
               borderRadius: '6px',
               fontSize: '14px',
@@ -104,7 +105,7 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
           <div style={{
             textAlign: 'center',
             padding: '40px',
-            color: '#9ca3af',
+            color: 'var(--color-text-muted)',
             fontSize: '14px'
           }}>
             Nog geen notities toegevoegd
@@ -115,9 +116,9 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
               key={note.id}
               style={{
                 padding: '16px',
-                backgroundColor: '#f9fafb',
+                backgroundColor: 'var(--color-bg-secondary)',
                 borderRadius: '8px',
-                border: '1px solid #e5e7eb'
+                border: '1px solid var(--color-border)'
               }}
             >
               {/* Note Header */}
@@ -132,13 +133,13 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
-                  backgroundColor: '#e5e7eb',
+                  backgroundColor: 'var(--color-border)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '12px',
                   fontWeight: '600',
-                  color: '#374151',
+                  color: 'var(--color-text)',
                   flexShrink: 0
                 }}>
                   {getAuthorInitials(note.author)}
@@ -149,13 +150,13 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
                   <div style={{
                     fontSize: '14px',
                     fontWeight: '600',
-                    color: '#111827'
+                    color: 'var(--color-text)'
                   }}>
                     {note.author}
                   </div>
                   <div style={{
                     fontSize: '12px',
-                    color: '#9ca3af'
+                    color: 'var(--color-text-muted)'
                   }}>
                     {note.createdAt}
                   </div>
@@ -166,7 +167,7 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
               <div style={{
                 fontSize: '14px',
                 lineHeight: '1.6',
-                color: '#374151',
+                color: 'var(--color-text)',
                 whiteSpace: 'pre-wrap'
               }}>
                 {note.content}
@@ -181,15 +182,15 @@ export const CandidateNotes: React.FC<CandidateNotesProps> = ({ notes, onAddNote
         <div style={{
           marginTop: '24px',
           padding: '12px',
-          backgroundColor: '#eff6ff',
+          backgroundColor: 'var(--color-primary-bg)',
           borderRadius: '6px',
-          border: '1px solid #dbeafe'
+          border: '1px solid var(--color-primary)'
         }}>
           <div style={{
             fontSize: '13px',
-            color: '#1e40af'
+            color: 'var(--color-primary)'
           }}>
-            📝 {notes.length} notit{notes.length === 1 ? 'tie' : 'ties'} van {notes.length} verschillende auteurs
+            ○ {notes.length} notit{notes.length === 1 ? 'ie' : 'ies'} van {notes.length} verschillende auteurs
           </div>
         </div>
       )}

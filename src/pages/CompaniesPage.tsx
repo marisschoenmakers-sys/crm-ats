@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CompanyList } from '../components/CompanyList';
-import { CompanyDetailPage } from './CompanyDetailPage';
 import { companies } from '../utils/mockCompanies';
 import type { Company } from '../types/company';
 
@@ -9,7 +9,7 @@ interface CompaniesPageProps {
 }
 
 export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) => {
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSector, setSelectedSector] = useState('');
 
@@ -30,58 +30,12 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
   }, [searchTerm, selectedSector]);
 
   const handleCompanySelect = (company: Company) => {
-    setSelectedCompanyId(company.id);
-    onChangePage?.('companyDetail');
+    if (onChangePage) {
+      onChangePage('companyDetail');
+    } else {
+      navigate(`/companies/${company.id}`);
+    }
   };
-
-  const handleBackToCompanies = () => {
-    setSelectedCompanyId(null);
-    onChangePage?.('companies');
-  };
-
-  const selectedCompany = companies.find(c => c.id === selectedCompanyId);
-
-  // If a company is selected, show detail view
-  if (selectedCompanyId && selectedCompany) {
-    return (
-      <div style={{ display: 'flex', gap: '24px' }}>
-        {/* Company List - Left side */}
-        <div style={{ flex: '0 0 400px' }}>
-          <div style={{ marginBottom: '16px' }}>
-            <button
-              onClick={handleBackToCompanies}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: 'white',
-                color: '#374151',
-                border: '1px solid #d1d5db',
-                borderRadius: '6px',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-            >
-              ← Terug naar bedrijven
-            </button>
-          </div>
-          <CompanyList 
-            companies={companies} 
-            onSelectCompany={handleCompanySelect}
-          />
-        </div>
-
-        {/* Company Detail - Right side */}
-        <div style={{ flex: 1 }}>
-          <CompanyDetailPage 
-            companyId={selectedCompanyId}
-          />
-        </div>
-      </div>
-    );
-  }
 
   // Show companies list
   return (
@@ -90,7 +44,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
       <h1 style={{
         fontSize: '28px',
         fontWeight: 'bold',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '16px'
       }}>
         Bedrijven
@@ -99,7 +53,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
       {/* Intro Text */}
       <p style={{
         fontSize: '16px',
-        color: '#6b7280',
+        color: 'var(--color-text-muted)',
         marginBottom: '32px',
         lineHeight: '1.5'
       }}>
@@ -108,12 +62,12 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
 
       {/* Filters */}
       <div style={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-card-bg)',
         borderRadius: '8px',
         padding: '20px',
         marginBottom: '24px',
         boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <div style={{
           display: 'grid',
@@ -127,7 +81,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
               display: 'block',
               fontSize: '14px',
               fontWeight: '500',
-              color: '#374151',
+              color: 'var(--color-text)',
               marginBottom: '6px'
             }}>
               Zoek bedrijven
@@ -140,10 +94,11 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #d1d5db',
+                border: '1px solid var(--color-input-border)',
                 borderRadius: '6px',
                 fontSize: '14px',
-                color: '#111827'
+                color: 'var(--color-text)',
+                backgroundColor: 'var(--color-input-bg)'
               }}
             />
           </div>
@@ -154,7 +109,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
               display: 'block',
               fontSize: '14px',
               fontWeight: '500',
-              color: '#374151',
+              color: 'var(--color-text)',
               marginBottom: '6px'
             }}>
               Sector
@@ -165,11 +120,11 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '1px solid #d1d5db',
+                border: '1px solid var(--color-input-border)',
                 borderRadius: '6px',
                 fontSize: '14px',
-                color: '#111827',
-                backgroundColor: 'white'
+                color: 'var(--color-text)',
+                backgroundColor: 'var(--color-input-bg)'
               }}
             >
               <option value="">Alle sectoren</option>
@@ -186,7 +141,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
         <div style={{
           marginTop: '16px',
           fontSize: '13px',
-          color: '#6b7280'
+          color: 'var(--color-text-muted)'
         }}>
           {filteredCompanies.length} van {companies.length} bedrijven
         </div>

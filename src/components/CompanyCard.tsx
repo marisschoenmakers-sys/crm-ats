@@ -10,13 +10,13 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick }) =>
   const getPriorityColor = (priority?: string) => {
     switch (priority) {
       case 'Hoog':
-        return '#dc2626';
+        return 'var(--color-danger)';
       case 'Middel':
-        return '#f59e0b';
+        return 'var(--color-warning)';
       case 'Laag':
-        return '#10b981';
+        return 'var(--color-success)';
       default:
-        return '#6b7280';
+        return 'var(--color-text-muted)';
     }
   };
 
@@ -24,11 +24,11 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick }) =>
     <div
       onClick={onClick}
       style={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-card-bg)',
         borderRadius: '8px',
         padding: '20px',
         boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        border: '1px solid #e5e7eb',
+        border: '1px solid var(--color-border)',
         cursor: onClick ? 'pointer' : 'default',
         transition: 'all 0.2s ease',
         minHeight: '140px'
@@ -50,7 +50,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick }) =>
       <div style={{
         fontSize: '16px',
         fontWeight: '600',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '8px',
         lineHeight: '1.3'
       }}>
@@ -60,7 +60,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick }) =>
       {/* Sector and Size */}
       <div style={{
         fontSize: '13px',
-        color: '#6b7280',
+        color: 'var(--color-text-muted)',
         marginBottom: '6px'
       }}>
         {company.sector && <span>{company.sector}</span>}
@@ -71,13 +71,13 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick }) =>
       {/* Location */}
       <div style={{
         fontSize: '13px',
-        color: '#6b7280',
+        color: 'var(--color-text-muted)',
         marginBottom: '8px',
         display: 'flex',
         alignItems: 'center',
         gap: '4px'
       }}>
-        <span>📍</span>
+        <span>●</span>
         <span>{company.location}</span>
       </div>
 
@@ -85,7 +85,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick }) =>
       {company.website && (
         <div style={{
           fontSize: '12px',
-          color: '#2563eb',
+          color: 'var(--color-primary)',
           marginBottom: '12px',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -103,7 +103,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick }) =>
           borderRadius: '12px',
           fontSize: '11px',
           fontWeight: '500',
-          color: 'white',
+          color: 'var(--color-sidebar-text)',
           backgroundColor: getPriorityColor(company.priority)
         }}>
           {company.priority} prioriteit

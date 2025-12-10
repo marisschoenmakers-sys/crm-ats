@@ -129,10 +129,10 @@ export const AnalyticsPage: React.FC = () => {
               </div>
               
               <div style={{ marginBottom: '4px' }}>
-                <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827' }}>{stat.value}</div>
+                <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--color-text)' }}>{stat.value}</div>
               </div>
               
-              <div style={{ fontSize: '14px', color: '#6b7280' }}>
+              <div style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>
                 {stat.title}
               </div>
             </div>
@@ -144,15 +144,15 @@ export const AnalyticsPage: React.FC = () => {
       <div className="grid grid-cols-2 gap-6">
         {/* Pipeline Chart */}
         <div className="card p-6">
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '16px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--color-text)', marginBottom: '16px' }}>
             Pipeline Distributie
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {pipelineData.map((item, index) => (
               <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ width: '128px', fontSize: '14px', color: '#6b7280' }}>{item.label}</div>
+                <div style={{ width: '128px', fontSize: '14px', color: 'var(--color-text-muted)' }}>{item.label}</div>
                 <div style={{ flex: 1, margin: '0 16px' }}>
-                  <div style={{ backgroundColor: '#e5e7eb', borderRadius: '12px', height: '24px', position: 'relative' }}>
+                  <div style={{ backgroundColor: 'var(--color-border)', borderRadius: '12px', height: '24px', position: 'relative' }}>
                     <div 
                       style={{
                         backgroundColor: item.color,
@@ -179,15 +179,15 @@ export const AnalyticsPage: React.FC = () => {
 
         {/* Department Chart */}
         <div className="card p-6">
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '16px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--color-text)', marginBottom: '16px' }}>
             Vacatures per Afdeling
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {departmentData.map((item, index) => (
               <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ width: '128px', fontSize: '14px', color: '#6b7280' }}>{item.label}</div>
+                <div style={{ width: '128px', fontSize: '14px', color: 'var(--color-text-muted)' }}>{item.label}</div>
                 <div style={{ flex: 1, margin: '0 16px' }}>
-                  <div style={{ backgroundColor: '#e5e7eb', borderRadius: '12px', height: '24px', position: 'relative' }}>
+                  <div style={{ backgroundColor: 'var(--color-border)', borderRadius: '12px', height: '24px', position: 'relative' }}>
                     <div 
                       style={{
                         backgroundColor: item.color,
@@ -216,72 +216,72 @@ export const AnalyticsPage: React.FC = () => {
       {/* Additional Stats */}
       <div className="grid grid-cols-3 gap-6" style={{ marginTop: '24px' }}>
         <div className="card p-6">
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '16px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--color-text)', marginBottom: '16px' }}>
             Top Functies
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Frontend Developer</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Frontend Developer</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>12</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Backend Engineer</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Backend Engineer</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>8</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Marketing Manager</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Marketing Manager</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>6</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Data Analyst</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Data Analyst</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>5</span>
             </div>
           </div>
         </div>
 
         <div className="card p-6">
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '16px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--color-text)', marginBottom: '16px' }}>
             Snelste Plaatsingen
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Sales Executive</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Sales Executive</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>14 dagen</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>HR Business Partner</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>HR Business Partner</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>18 dagen</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Marketing Manager</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Marketing Manager</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>20 dagen</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Frontend Developer</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Frontend Developer</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>25 dagen</span>
             </div>
           </div>
         </div>
 
         <div className="card p-6">
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '16px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--color-text)', marginBottom: '16px' }}>
             Bronnen
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>LinkedIn</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>LinkedIn</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>45%</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Website</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Website</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>28%</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Referral</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Referral</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>18%</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>Andere</span>
+              <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Andere</span>
               <span style={{ fontSize: '14px', fontWeight: '500' }}>9%</span>
             </div>
           </div>

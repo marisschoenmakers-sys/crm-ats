@@ -26,27 +26,27 @@ export const CandidateActivity: React.FC<CandidateActivityProps> = ({ activities
   const getActivityColor = (type: CandidateActivity['type']): string => {
     switch (type) {
       case 'note':
-        return '#fef3c7';
+        return 'var(--color-warning-bg)';
       case 'file':
-        return '#dcfce7';
+        return 'var(--color-success-bg)';
       case 'status':
-        return '#dbeafe';
+        return 'var(--color-primary-bg)';
       case 'evaluation':
-        return '#e9d5ff';
+        return 'var(--color-warning-bg)';
       case 'update':
-        return '#f3f4f6';
+        return 'var(--color-bg-secondary)';
       default:
-        return '#f3f4f6';
+        return 'var(--color-bg-secondary)';
     }
   };
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       {/* Header */}
       <div style={{
@@ -58,7 +58,7 @@ export const CandidateActivity: React.FC<CandidateActivityProps> = ({ activities
         <h3 style={{
           fontSize: '18px',
           fontWeight: '600',
-          color: '#111827',
+          color: 'var(--color-text)',
           margin: 0
         }}>
           Activiteit ({activities.length})
@@ -74,7 +74,7 @@ export const CandidateActivity: React.FC<CandidateActivityProps> = ({ activities
           top: '0',
           bottom: '0',
           width: '2px',
-          backgroundColor: '#e5e7eb'
+          backgroundColor: 'var(--color-border)'
         }} />
 
         {/* Activity Items */}
@@ -83,7 +83,7 @@ export const CandidateActivity: React.FC<CandidateActivityProps> = ({ activities
             <div style={{
               textAlign: 'center',
               padding: '40px',
-              color: '#9ca3af',
+              color: 'var(--color-text-muted)',
               fontSize: '14px'
             }}>
               Nog geen activiteiten geregistreerd
@@ -111,7 +111,7 @@ export const CandidateActivity: React.FC<CandidateActivityProps> = ({ activities
                   justifyContent: 'center',
                   fontSize: '16px',
                   flexShrink: 0,
-                  border: '2px solid white',
+                  border: '2px solid var(--color-card-bg)',
                   boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
                 }}>
                   {getActivityIcon(activity.type)}
@@ -122,7 +122,7 @@ export const CandidateActivity: React.FC<CandidateActivityProps> = ({ activities
                   <div style={{
                     fontSize: '14px',
                     fontWeight: '500',
-                    color: '#111827',
+                    color: 'var(--color-text)',
                     marginBottom: '4px',
                     lineHeight: '1.4'
                   }}>
@@ -130,7 +130,7 @@ export const CandidateActivity: React.FC<CandidateActivityProps> = ({ activities
                   </div>
                   <div style={{
                     fontSize: '12px',
-                    color: '#9ca3af'
+                    color: 'var(--color-text-muted)'
                   }}>
                     {activity.createdAt}
                   </div>
@@ -146,15 +146,15 @@ export const CandidateActivity: React.FC<CandidateActivityProps> = ({ activities
         <div style={{
           marginTop: '24px',
           padding: '12px',
-          backgroundColor: '#f9fafb',
+          backgroundColor: 'var(--color-bg-secondary)',
           borderRadius: '6px',
-          border: '1px solid #e5e7eb'
+          border: '1px solid var(--color-border)'
         }}>
           <div style={{
             fontSize: '13px',
-            color: '#6b7280'
+            color: 'var(--color-text-muted)'
           }}>
-            Laatste activiteit: <strong style={{ color: '#111827' }}>{activities[0]?.createdAt}</strong>
+            Laatste activiteit: <strong style={{ color: 'var(--color-text)' }}>{activities[0]?.createdAt}</strong>
           </div>
         </div>
       )}

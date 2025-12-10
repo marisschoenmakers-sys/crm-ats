@@ -1,4 +1,4 @@
-export type CRMPage = "dashboard" | "vacancies" | "vacancyDetail" | "companies" | "companyDetail" | "candidates" | "candidateDetail" | "talentpools" | "mailbox" | "analytics";
+export type CRMPage = "dashboard" | "vacancies" | "vacancyDetail" | "companies" | "companyDetail" | "candidates" | "candidateDetail" | "talentpools" | "mailbox" | "analytics" | "evaluations" | "settings";
 
 export interface Candidate {
   id: number;

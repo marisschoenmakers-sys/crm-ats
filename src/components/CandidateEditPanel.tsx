@@ -64,7 +64,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
       zIndex: 1000
     }}>
       <div style={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-card-bg)',
         borderRadius: '8px',
         width: '90%',
         maxWidth: '600px',
@@ -75,7 +75,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
         {/* Header */}
         <div style={{
           padding: '24px',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: '1px solid var(--color-border)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center'
@@ -83,7 +83,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
           <h2 style={{
             fontSize: '20px',
             fontWeight: '600',
-            color: '#111827',
+            color: 'var(--color-text)',
             margin: 0
           }}>
             Kandidaat Bewerken
@@ -95,7 +95,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
               backgroundColor: 'transparent',
               border: 'none',
               fontSize: '24px',
-              color: '#6b7280',
+              color: 'var(--color-text-muted)',
               cursor: 'pointer',
               padding: '0',
               width: '32px',
@@ -118,7 +118,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 display: 'block',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#374151',
+                color: 'var(--color-text)',
                 marginBottom: '6px'
               }}>
                 Volledige naam
@@ -130,10 +130,11 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--color-input-border)',
                   borderRadius: '6px',
                   fontSize: '14px',
-                  color: '#111827'
+                  color: 'var(--color-text)',
+                  backgroundColor: 'var(--color-input-bg)'
                 }}
                 required
               />
@@ -145,7 +146,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 display: 'block',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#374151',
+                color: 'var(--color-text)',
                 marginBottom: '6px'
               }}>
                 Functie
@@ -157,10 +158,11 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--color-input-border)',
                   borderRadius: '6px',
                   fontSize: '14px',
-                  color: '#111827'
+                  color: 'var(--color-text)',
+                  backgroundColor: 'var(--color-input-bg)'
                 }}
                 required
               />
@@ -172,7 +174,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 display: 'block',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#374151',
+                color: 'var(--color-text)',
                 marginBottom: '6px'
               }}>
                 Locatie
@@ -184,10 +186,11 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--color-input-border)',
                   borderRadius: '6px',
                   fontSize: '14px',
-                  color: '#111827'
+                  color: 'var(--color-text)',
+                  backgroundColor: 'var(--color-input-bg)'
                 }}
                 required
               />
@@ -199,7 +202,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 display: 'block',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#374151',
+                color: 'var(--color-text)',
                 marginBottom: '6px'
               }}>
                 Email
@@ -211,10 +214,11 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--color-input-border)',
                   borderRadius: '6px',
                   fontSize: '14px',
-                  color: '#111827'
+                  color: 'var(--color-text)',
+                  backgroundColor: 'var(--color-input-bg)'
                 }}
                 required
               />
@@ -226,7 +230,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 display: 'block',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#374151',
+                color: 'var(--color-text)',
                 marginBottom: '6px'
               }}>
                 Telefoon
@@ -238,10 +242,11 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--color-input-border)',
                   borderRadius: '6px',
                   fontSize: '14px',
-                  color: '#111827'
+                  color: 'var(--color-text)',
+                  backgroundColor: 'var(--color-input-bg)'
                 }}
                 required
               />
@@ -253,7 +258,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 display: 'block',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#374151',
+                color: 'var(--color-text)',
                 marginBottom: '6px'
               }}>
                 Stage
@@ -264,11 +269,11 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--color-input-border)',
                   borderRadius: '6px',
                   fontSize: '14px',
-                  color: '#111827',
-                  backgroundColor: 'white'
+                  color: 'var(--color-text)',
+                  backgroundColor: 'var(--color-input-bg)'
                 }}
               >
                 {stages.map(stage => (
@@ -285,7 +290,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 display: 'block',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#374151',
+                color: 'var(--color-text)',
                 marginBottom: '6px'
               }}>
                 Vacature
@@ -297,10 +302,11 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--color-input-border)',
                   borderRadius: '6px',
                   fontSize: '14px',
-                  color: '#111827'
+                  color: 'var(--color-text)',
+                  backgroundColor: 'var(--color-input-bg)'
                 }}
                 required
               />
@@ -312,7 +318,7 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 display: 'block',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#374151',
+                color: 'var(--color-text)',
                 marginBottom: '6px'
               }}>
                 Samenvatting
@@ -324,10 +330,11 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
                 style={{
                   width: '100%',
                   padding: '10px 12px',
-                  border: '1px solid #d1d5db',
+                  border: '1px solid var(--color-input-border)',
                   borderRadius: '6px',
                   fontSize: '14px',
-                  color: '#111827',
+                  color: 'var(--color-text)',
+                  backgroundColor: 'var(--color-input-bg)',
                   resize: 'vertical'
                 }}
                 required
@@ -342,16 +349,16 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
             justifyContent: 'flex-end',
             marginTop: '32px',
             paddingTop: '24px',
-            borderTop: '1px solid #e5e7eb'
+            borderTop: '1px solid var(--color-border)'
           }}>
             <button
               type="button"
               onClick={handleCancel}
               style={{
                 padding: '10px 20px',
-                backgroundColor: 'white',
-                color: '#374151',
-                border: '1px solid #d1d5db',
+                backgroundColor: 'var(--color-card-bg)',
+                color: 'var(--color-text)',
+                border: '1px solid var(--color-border)',
                 borderRadius: '6px',
                 fontSize: '14px',
                 fontWeight: '500',
@@ -365,8 +372,8 @@ export const CandidateEditPanel: React.FC<CandidateEditPanelProps> = ({
               type="submit"
               style={{
                 padding: '10px 20px',
-                backgroundColor: '#2563eb',
-                color: 'white',
+                backgroundColor: 'var(--color-primary)',
+                color: 'var(--color-sidebar-text)',
                 border: 'none',
                 borderRadius: '6px',
                 fontSize: '14px',

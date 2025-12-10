@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { vacancyCandidatesByVacancyId } from '../utils/mockVacancies';
 import type { VacancyCandidate } from '../types/vacancy';
+
+// Stage type for all 10 stages
+type StageType = 'Gesolliciteerd' | 'Geen gehoor' | 'Telefonisch interview' | 'In afwachting van CV' | 'Twijfel kandidaat' | 'Nog afwijzen' | 'Voorgesteld' | 'Afspraak op locatie' | 'Aanbod' | 'Aangenomen';
 
 interface VacancyPipelineProps {
   vacancyId: string;
 }
 
 export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) => {
-  // Get candidates for this vacancy
-  const vacancyCandidates = vacancyCandidatesByVacancyId[vacancyId] || [];
+  // Get candidates for this vacancy and make them stateful
+  const initialCandidates = vacancyCandidatesByVacancyId[vacancyId] || [];
+  const [candidates, setCandidates] = useState<VacancyCandidate[]>(initialCandidates);
+  const [draggedCandidate, setDraggedCandidate] = useState<VacancyCandidate | null>(null);
+  const [dragOverStage, setDragOverStage] = useState<string | null>(null);
   
   // Define stages (recruitment funnel from left to right)
-  const stages = [
+  const stages: StageType[] = [
     'Gesolliciteerd',
     'Geen gehoor',
     'Telefonisch interview',
@@ -26,17 +32,24 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
 
   // Group candidates by stage
   const candidatesByStage = stages.reduce((acc, stage) => {
-    acc[stage] = vacancyCandidates.filter(candidate => candidate.stage === stage);
+    acc[stage] = candidates.filter(candidate => candidate.stage === stage);
     return acc;
   }, {} as Record<string, VacancyCandidate[]>);
 
+  // Handle moving a candidate to a new stage
+  const moveCandidate = (candidateId: string, newStage: StageType) => {
+    setCandidates(prev => prev.map(c => 
+      c.id === candidateId ? { ...c, stage: newStage } : c
+    ));
+  };
+
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '16px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb',
+      border: '1px solid var(--color-border)',
       width: '100%',
       margin: '0'
     }}>
@@ -50,7 +63,7 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
         <h2 style={{
           fontSize: '18px',
           fontWeight: '600',
-          color: '#111827',
+          color: 'var(--color-text)',
           margin: 0
         }}>
           Vacature Funnel
@@ -59,9 +72,9 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
         {/* Summary */}
         <div style={{
           fontSize: '14px',
-          color: '#6b7280'
+          color: 'var(--color-text-muted)'
         }}>
-          <span style={{ fontWeight: '500' }}>{vacancyCandidates.length}</span> kandidaten
+          <span style={{ fontWeight: '500' }}>{candidates.length}</span> kandidaten
         </div>
       </div>
 
@@ -80,17 +93,32 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
           return (
             <div
               key={stage}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragOverStage(stage);
+              }}
+              onDragLeave={() => setDragOverStage(null)}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (draggedCandidate) {
+                  moveCandidate(draggedCandidate.id, stage);
+                  setDraggedCandidate(null);
+                }
+                setDragOverStage(null);
+              }}
               style={{
                 minWidth: '300px',
                 maxWidth: '350px',
                 width: '300px',
-                backgroundColor: '#f3f4f6',
+                backgroundColor: dragOverStage === stage ? 'var(--color-primary-bg)' : 'var(--color-bg-secondary)',
                 borderRadius: '8px',
                 padding: '16px',
                 flexShrink: 0,
                 display: 'flex',
                 flexDirection: 'column',
-                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+                border: dragOverStage === stage ? '2px dashed var(--color-primary)' : '2px solid transparent',
+                transition: 'background-color 0.2s, border-color 0.2s'
               }}
             >
               {/* Stage Header */}
@@ -100,12 +128,12 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
                 alignItems: 'center',
                 marginBottom: '12px',
                 paddingBottom: '8px',
-                borderBottom: '1px solid #e5e7eb'
+                borderBottom: '1px solid var(--color-border)'
               }}>
                 <h3 style={{
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#111827',
+                  color: 'var(--color-text)',
                   margin: 0
                 }}>
                   {stage}
@@ -113,8 +141,8 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
                 
                 {/* Candidate Count Badge */}
                 <span style={{
-                  backgroundColor: '#e5e7eb',
-                  color: '#374151',
+                  backgroundColor: 'var(--color-border)',
+                  color: 'var(--color-text)',
                   fontSize: '12px',
                   fontWeight: '500',
                   padding: '2px 8px',
@@ -135,7 +163,7 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
                 {stageCandidates.length === 0 ? (
                   <div style={{
                     fontSize: '12px',
-                    color: '#9ca3af',
+                    color: 'var(--color-text-muted)',
                     fontStyle: 'italic',
                     textAlign: 'center',
                     padding: '20px 0'
@@ -146,11 +174,11 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
                   stageCandidates.map((candidate) => (
                     <VacancyCandidateCard
                       key={candidate.id}
-                      name={candidate.fullName}
-                      role={candidate.role}
-                      stage={candidate.stage}
-                      appliedAt={candidate.appliedAt}
-                      source={candidate.source}
+                      candidate={candidate}
+                      stages={stages}
+                      onMoveCandidate={moveCandidate}
+                      onDragStart={() => setDraggedCandidate(candidate)}
+                      onDragEnd={() => setDraggedCandidate(null)}
                     />
                   ))
                 )}
@@ -164,14 +192,14 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
       <div style={{
         marginTop: '24px',
         padding: '16px',
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'var(--color-bg-secondary)',
         borderRadius: '8px',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <div style={{
           fontSize: '14px',
           fontWeight: '500',
-          color: '#111827',
+          color: 'var(--color-text)',
           marginBottom: '8px'
         }}>
           Funnel Statistieken
@@ -180,120 +208,180 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
           display: 'flex',
           gap: '24px',
           fontSize: '13px',
-          color: '#6b7280'
+          color: 'var(--color-text-muted)'
         }}>
-          <span>Totaal kandidaten: <strong style={{ color: '#111827' }}>{vacancyCandidates.length}</strong></span>
-          <span>Actieve stages: <strong style={{ color: '#111827' }}>{stages.filter(stage => candidatesByStage[stage].length > 0).length}</strong></span>
-          <span>Gemiddeld per stage: <strong style={{ color: '#111827' }}>{Math.round(vacancyCandidates.length / stages.length)}</strong></span>
+          <span>Totaal kandidaten: <strong style={{ color: 'var(--color-text)' }}>{candidates.length}</strong></span>
+          <span>Actieve stages: <strong style={{ color: 'var(--color-text)' }}>{stages.filter(stage => candidatesByStage[stage].length > 0).length}</strong></span>
+          <span>Gemiddeld per stage: <strong style={{ color: 'var(--color-text)' }}>{Math.round(candidates.length / stages.length)}</strong></span>
         </div>
       </div>
     </div>
   );
 };
 
-// Simple candidate card for vacancy pipeline
+// Candidate card with drag-and-drop and move menu
 interface VacancyCandidateCardProps {
-  name: string;
-  role: string;
-  stage: 'Gesolliciteerd' | 'Geen gehoor' | 'Telefonisch interview' | 'In afwachting van CV' | 'Twijfel kandidaat' | 'Nog afwijzen' | 'Voorgesteld' | 'Afspraak op locatie' | 'Aanbod' | 'Aangenomen';
-  appliedAt: string;
-  source?: string;
+  candidate: VacancyCandidate;
+  stages: StageType[];
+  onMoveCandidate: (candidateId: string, newStage: StageType) => void;
+  onDragStart: () => void;
+  onDragEnd: () => void;
 }
 
 const VacancyCandidateCard: React.FC<VacancyCandidateCardProps> = ({ 
-  name, 
-  role, 
-  stage, 
-  appliedAt, 
-  source 
+  candidate,
+  stages,
+  onMoveCandidate,
+  onDragStart,
+  onDragEnd
 }) => {
-  const getStageColor = (stage: 'Gesolliciteerd' | 'Geen gehoor' | 'Telefonisch interview' | 'In afwachting van CV' | 'Twijfel kandidaat' | 'Nog afwijzen' | 'Voorgesteld' | 'Afspraak op locatie' | 'Aanbod' | 'Aangenomen') => {
-    const colors = {
-      'Gesolliciteerd': '#dbeafe',
-      'Geen gehoor': '#f3f4f6',
-      'Telefonisch interview': '#e9d5ff',
-      'In afwachting van CV': '#fef3c7',
-      'Twijfel kandidaat': '#fed7aa',
-      'Nog afwijzen': '#fecaca',
-      'Voorgesteld': '#dcfce7',
-      'Afspraak op locatie': '#bfdbfe',
-      'Aanbod': '#c7d2fe',
-      'Aangenomen': '#86efac'
-    };
-    return colors[stage] || '#f3f4f6';
-  };
+  const [showMoveMenu, setShowMoveMenu] = useState(false);
 
   return (
-    <div style={{
-      backgroundColor: 'white',
-      borderRadius: '8px',
-      padding: '12px',
-      marginBottom: '8px',
-      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb',
-      cursor: 'pointer',
-      transition: 'box-shadow 0.2s ease, transform 0.2s ease'
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-      e.currentTarget.style.transform = 'translateY(-1px)';
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
-      e.currentTarget.style.transform = 'translateY(0)';
-    }}
+    <div 
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.effectAllowed = 'move';
+        onDragStart();
+      }}
+      onDragEnd={onDragEnd}
+      style={{
+        backgroundColor: 'var(--color-card-bg)',
+        borderRadius: '8px',
+        padding: '12px',
+        marginBottom: '8px',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+        border: '1px solid var(--color-border)',
+        cursor: 'grab',
+        transition: 'box-shadow 0.2s ease, transform 0.2s ease',
+        position: 'relative'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        e.currentTarget.style.transform = 'translateY(-1px)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+        e.currentTarget.style.transform = 'translateY(0)';
+        setShowMoveMenu(false);
+      }}
     >
-      {/* Candidate Name */}
-      <div style={{
-        fontSize: '14px',
-        fontWeight: '600',
-        color: '#111827',
-        marginBottom: '6px'
-      }}>
-        {name}
+      {/* Header with name and move button */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
+        <div style={{
+          fontSize: '14px',
+          fontWeight: '600',
+          color: 'var(--color-text)'
+        }}>
+          {candidate.fullName}
+        </div>
+        
+        {/* Move button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowMoveMenu(!showMoveMenu);
+          }}
+          style={{
+            padding: '4px 8px',
+            backgroundColor: 'var(--color-bg-secondary)',
+            border: '1px solid var(--color-border)',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '11px',
+            color: 'var(--color-text-muted)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}
+        >
+          ↔ Verplaats
+        </button>
       </div>
+
+      {/* Move Menu Dropdown */}
+      {showMoveMenu && (
+        <div style={{
+          position: 'absolute',
+          top: '40px',
+          right: '12px',
+          backgroundColor: 'var(--color-card-bg)',
+          border: '1px solid var(--color-border)',
+          borderRadius: '8px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          zIndex: 100,
+          minWidth: '200px',
+          maxHeight: '300px',
+          overflowY: 'auto'
+        }}>
+          <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--color-border)', fontSize: '12px', fontWeight: '600', color: 'var(--color-text-muted)' }}>
+            Verplaats naar:
+          </div>
+          {stages.map((stage) => (
+            <button
+              key={stage}
+              onClick={(e) => {
+                e.stopPropagation();
+                onMoveCandidate(candidate.id, stage);
+                setShowMoveMenu(false);
+              }}
+              disabled={stage === candidate.stage}
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '10px 12px',
+                backgroundColor: stage === candidate.stage ? 'var(--color-primary-bg)' : 'transparent',
+                border: 'none',
+                textAlign: 'left',
+                cursor: stage === candidate.stage ? 'default' : 'pointer',
+                fontSize: '13px',
+                color: stage === candidate.stage ? 'var(--color-primary)' : 'var(--color-text)',
+                fontWeight: stage === candidate.stage ? '600' : 'normal',
+                borderBottom: '1px solid var(--color-border)'
+              }}
+              onMouseEnter={(e) => {
+                if (stage !== candidate.stage) {
+                  e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (stage !== candidate.stage) {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }
+              }}
+            >
+              {stage === candidate.stage ? `✓ ${stage}` : stage}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Role */}
       <div style={{
         fontSize: '13px',
-        color: '#374151',
+        color: 'var(--color-text)',
         marginBottom: '4px'
       }}>
-        {role}
-      </div>
-
-      {/* Stage Badge */}
-      <div style={{ marginBottom: '4px' }}>
-        <span style={{
-          display: 'inline-block',
-          padding: '2px 6px',
-          borderRadius: '10px',
-          fontSize: '11px',
-          fontWeight: '500',
-          backgroundColor: getStageColor(stage),
-          color: '#374151'
-        }}>
-          {stage}
-        </span>
+        {candidate.role}
       </div>
 
       {/* Applied Date */}
       <div style={{
         fontSize: '11px',
-        color: '#9ca3af',
+        color: 'var(--color-text-muted)',
         fontStyle: 'italic'
       }}>
-        Sinds: {appliedAt}
+        Sinds: {candidate.appliedAt}
       </div>
 
       {/* Optional Source */}
-      {source && (
+      {candidate.source && (
         <div style={{
           fontSize: '10px',
-          color: '#9ca3af',
+          color: 'var(--color-text-muted)',
           marginTop: '4px'
         }}>
-          Bron: {source}
+          Bron: {candidate.source}
         </div>
       )}
     </div>

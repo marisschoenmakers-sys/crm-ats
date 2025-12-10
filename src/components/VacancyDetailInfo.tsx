@@ -8,19 +8,19 @@ interface VacancyDetailInfoProps {
 export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy }) => {
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       {/* Meta Info Block */}
       <div style={{
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'var(--color-bg-secondary)',
         borderRadius: '6px',
         padding: '16px',
         marginBottom: '24px',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <div style={{
           display: 'grid',
@@ -31,14 +31,14 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
             <div style={{
               fontSize: '12px',
               fontWeight: '500',
-              color: '#9ca3af',
+              color: 'var(--color-text-muted)',
               marginBottom: '4px'
             }}>
               Werkgever
             </div>
             <div style={{
               fontSize: '14px',
-              color: '#111827'
+              color: 'var(--color-text)'
             }}>
               {vacancy.company}
             </div>
@@ -48,14 +48,14 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
             <div style={{
               fontSize: '12px',
               fontWeight: '500',
-              color: '#9ca3af',
+              color: 'var(--color-text-muted)',
               marginBottom: '4px'
             }}>
               Locatie
             </div>
             <div style={{
               fontSize: '14px',
-              color: '#111827'
+              color: 'var(--color-text)'
             }}>
               {vacancy.location}
             </div>
@@ -65,14 +65,14 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
             <div style={{
               fontSize: '12px',
               fontWeight: '500',
-              color: '#9ca3af',
+              color: 'var(--color-text-muted)',
               marginBottom: '4px'
             }}>
               Contracttype
             </div>
             <div style={{
               fontSize: '14px',
-              color: '#111827'
+              color: 'var(--color-text)'
             }}>
               {vacancy.employmentType}
             </div>
@@ -83,14 +83,14 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
               <div style={{
                 fontSize: '12px',
                 fontWeight: '500',
-                color: '#9ca3af',
+                color: 'var(--color-text-muted)',
                 marginBottom: '4px'
               }}>
                 Salarisindicatie
               </div>
               <div style={{
                 fontSize: '14px',
-                color: '#111827'
+                color: 'var(--color-text)'
               }}>
                 {vacancy.salaryRange}
               </div>
@@ -102,14 +102,14 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
               <div style={{
                 fontSize: '12px',
                 fontWeight: '500',
-                color: '#9ca3af',
+                color: 'var(--color-text-muted)',
                 marginBottom: '4px'
               }}>
                 Sector
               </div>
               <div style={{
                 fontSize: '14px',
-                color: '#111827'
+                color: 'var(--color-text)'
               }}>
                 {vacancy.sector}
               </div>
@@ -121,14 +121,14 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
               <div style={{
                 fontSize: '12px',
                 fontWeight: '500',
-                color: '#9ca3af',
+                color: 'var(--color-text-muted)',
                 marginBottom: '4px'
               }}>
                 Prioriteit
               </div>
               <div style={{
                 fontSize: '14px',
-                color: '#111827'
+                color: 'var(--color-text)'
               }}>
                 {vacancy.priority}
               </div>
@@ -148,7 +148,7 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
           <h2 style={{
             fontSize: '18px',
             fontWeight: '600',
-            color: '#111827',
+            color: 'var(--color-text)',
             marginBottom: '16px'
           }}>
             Functieomschrijving
@@ -156,7 +156,7 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
           <div style={{
             fontSize: '14px',
             lineHeight: '1.6',
-            color: '#374151'
+            color: 'var(--color-text)'
           }}>
             {vacancy.description.split('\n').map((paragraph, index) => (
               <p key={index} style={{ margin: '0 0 12px 0' }}>
@@ -171,7 +171,7 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
           <h2 style={{
             fontSize: '18px',
             fontWeight: '600',
-            color: '#111827',
+            color: 'var(--color-text)',
             marginBottom: '16px'
           }}>
             Functie-eisen
@@ -181,7 +181,7 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
             paddingLeft: '20px',
             fontSize: '14px',
             lineHeight: '1.6',
-            color: '#374151'
+            color: 'var(--color-text)'
           }}>
             {vacancy.requirements.map((requirement, index) => (
               <li key={index} style={{ marginBottom: '8px' }}>

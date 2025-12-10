@@ -8,16 +8,16 @@ interface CandidateOverviewProps {
 export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate }) => {
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       <h2 style={{
         fontSize: '18px',
         fontWeight: '600',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '16px'
       }}>
         Overzicht
@@ -28,7 +28,7 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
         <h3 style={{
           fontSize: '14px',
           fontWeight: '600',
-          color: '#374151',
+          color: 'var(--color-text)',
           marginBottom: '8px'
         }}>
           Samenvatting
@@ -36,7 +36,7 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
         <p style={{
           fontSize: '14px',
           lineHeight: '1.6',
-          color: '#6b7280',
+          color: 'var(--color-text-muted)',
           margin: 0
         }}>
           {candidate.summary}
@@ -53,14 +53,14 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
           <div style={{
             fontSize: '12px',
             fontWeight: '500',
-            color: '#9ca3af',
+            color: 'var(--color-text-muted)',
             marginBottom: '4px'
           }}>
             Functie
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#111827'
+            color: 'var(--color-text)'
           }}>
             {candidate.role}
           </div>
@@ -70,14 +70,14 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
           <div style={{
             fontSize: '12px',
             fontWeight: '500',
-            color: '#9ca3af',
+            color: 'var(--color-text-muted)',
             marginBottom: '4px'
           }}>
             Vacature
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#111827'
+            color: 'var(--color-text)'
           }}>
             {candidate.vacancy}
           </div>
@@ -87,14 +87,14 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
           <div style={{
             fontSize: '12px',
             fontWeight: '500',
-            color: '#9ca3af',
+            color: 'var(--color-text-muted)',
             marginBottom: '4px'
           }}>
             Locatie
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#111827'
+            color: 'var(--color-text)'
           }}>
             {candidate.location}
           </div>
@@ -104,14 +104,14 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
           <div style={{
             fontSize: '12px',
             fontWeight: '500',
-            color: '#9ca3af',
+            color: 'var(--color-text-muted)',
             marginBottom: '4px'
           }}>
             Huidige stage
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#111827'
+            color: 'var(--color-text)'
           }}>
             {candidate.stage}
           </div>
@@ -121,14 +121,14 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
           <div style={{
             fontSize: '12px',
             fontWeight: '500',
-            color: '#9ca3af',
+            color: 'var(--color-text-muted)',
             marginBottom: '4px'
           }}>
             Startdatum
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#111827'
+            color: 'var(--color-text)'
           }}>
             {candidate.addedAt}
           </div>
@@ -138,14 +138,14 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
           <div style={{
             fontSize: '12px',
             fontWeight: '500',
-            color: '#9ca3af',
+            color: 'var(--color-text-muted)',
             marginBottom: '4px'
           }}>
             Email
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#111827'
+            color: 'var(--color-text)'
           }}>
             {candidate.email}
           </div>
@@ -155,14 +155,14 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
           <div style={{
             fontSize: '12px',
             fontWeight: '500',
-            color: '#9ca3af',
+            color: 'var(--color-text-muted)',
             marginBottom: '4px'
           }}>
             Telefoon
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#111827'
+            color: 'var(--color-text)'
           }}>
             {candidate.phone}
           </div>
@@ -173,21 +173,21 @@ export const CandidateOverview: React.FC<CandidateOverviewProps> = ({ candidate 
       <div style={{
         marginTop: '24px',
         padding: '16px',
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'var(--color-bg-secondary)',
         borderRadius: '6px',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <div style={{
           fontSize: '14px',
           fontWeight: '500',
-          color: '#374151',
+          color: 'var(--color-text)',
           marginBottom: '8px'
         }}>
           Status
         </div>
         <div style={{
           fontSize: '13px',
-          color: '#6b7280'
+          color: 'var(--color-text-muted)'
         }}>
           Kandidaat bevindt zich momenteel in de <strong>{candidate.stage}</strong> fase.
           {candidate.stage === 'Telefonisch interview' && ' Volgende stap: persoonlijk gesprek plannen.'}

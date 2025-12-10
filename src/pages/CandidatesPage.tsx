@@ -1,26 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CandidateFilterBar } from '../components/CandidateFilterBar';
 import { CandidateList } from '../components/CandidateList';
-import { candidates } from '../utils/mockCandidates';
+import { getCandidates } from '../api/candidates';
+import CreateCandidateForm from '../components/CreateCandidateForm';
 
 interface CandidatesPageProps {
-  onChangePage: (page: 'candidates' | 'candidateDetail') => void;
+  onChangePage?: (page: 'candidates' | 'candidateDetail') => void;
 }
 
 export const CandidatesPage: React.FC<CandidatesPageProps> = ({ onChangePage }) => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [candidates, setCandidates] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+
+  // Load candidates from Supabase
+  useEffect(() => {
+    async function loadCandidates() {
+      const { data, error } = await getCandidates();
+      if (error) {
+        console.error('Error loading candidates:', error);
+      } else {
+        setCandidates(data || []);
+      }
+      setLoading(false);
+    }
+    loadCandidates();
+  }, []);
+
+  // Refresh candidates after creating new one
+  const refreshCandidates = async () => {
+    const { data, error } = await getCandidates();
+    if (!error) {
+      setCandidates(data || []);
+    }
+  };
 
   // Filter candidates based on search term
   const filteredCandidates = candidates.filter(candidate =>
-    candidate.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+    `${candidate.first_name} ${candidate.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
   };
 
-  const handleCandidateClick = () => {
-    onChangePage('candidateDetail');
+  const handleCandidateClick = (candidateId?: string) => {
+    if (onChangePage) {
+      onChangePage('candidateDetail');
+    } else {
+      navigate(`/candidates/${candidateId || '1'}`);
+    }
   };
 
   return (
@@ -29,7 +61,7 @@ export const CandidatesPage: React.FC<CandidatesPageProps> = ({ onChangePage }) 
       <h1 style={{
         fontSize: '24px',
         fontWeight: 'bold',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '8px'
       }}>
         Kandidaten
@@ -38,29 +70,75 @@ export const CandidatesPage: React.FC<CandidatesPageProps> = ({ onChangePage }) 
       {/* Page Description */}
       <p style={{
         fontSize: '14px',
-        color: '#6b7280',
+        color: 'var(--color-text-muted)',
         marginBottom: '24px'
       }}>
         Beheer en volg alle kandidaten door het recruitment proces. Gebruik de zoekbalk om snel specifieke kandidaten te vinden.
       </p>
 
       {/* Filter Bar */}
-      <CandidateFilterBar onSearchChange={handleSearchChange} />
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '24px'
+      }}>
+        <CandidateFilterBar onSearchChange={handleSearchChange} />
+        <button
+          onClick={() => setShowCreateForm(true)}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: 'var(--color-primary)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '14px',
+            cursor: 'pointer'
+          }}
+        >
+          + Nieuwe kandidaat
+        </button>
+      </div>
 
       {/* Candidate List */}
-      <CandidateList candidates={filteredCandidates} onCandidateClick={handleCandidateClick} />
+      {loading ? (
+        <div style={{
+          padding: '40px',
+          textAlign: 'center',
+          color: 'var(--color-text-muted)'
+        }}>
+          Laden...
+        </div>
+      ) : (
+        <CandidateList 
+          candidates={filteredCandidates.map(c => ({
+            id: c.id,
+            firstName: c.first_name,
+            lastName: c.last_name,
+            fullName: `${c.first_name} ${c.last_name}`,
+            role: c.job_title || 'Geen functie',
+            location: c.location || '',
+            stage: 'Gesolliciteerd' as const,
+            vacancy: 'Geen vacature',
+            addedAt: new Date(c.created_at).toLocaleDateString('nl-NL'),
+            tags: c.tags || [],
+            avatarUrl: c.avatar_url
+          }))} 
+          onCandidateClick={handleCandidateClick} 
+        />
+      )}
 
       {/* Results Summary */}
       <div style={{
         marginTop: '24px',
         padding: '16px',
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'var(--color-bg-secondary)',
         borderRadius: '8px',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <div style={{
           fontSize: '14px',
-          color: '#6b7280'
+          color: 'var(--color-text-muted)'
         }}>
           {searchTerm ? (
             <>
@@ -73,6 +151,14 @@ export const CandidatesPage: React.FC<CandidatesPageProps> = ({ onChangePage }) 
           )}
         </div>
       </div>
+
+      {/* Create Candidate Form Modal */}
+      {showCreateForm && (
+        <CreateCandidateForm
+          onClose={() => setShowCreateForm(false)}
+          onSuccess={refreshCandidates}
+        />
+      )}
     </div>
   );
 };

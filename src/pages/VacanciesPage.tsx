@@ -1,13 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { vacancies } from '../utils/mockVacancies';
 
 interface VacanciesPageProps {
-  onChangePage: (vacancyId: string) => void;
+  onChangePage?: (vacancyId: string) => void;
 }
 
 export const VacanciesPage: React.FC<VacanciesPageProps> = ({ onChangePage }) => {
+  const navigate = useNavigate();
+  
   const handleVacancyClick = (vacancyId: string) => {
-    onChangePage(vacancyId);
+    if (onChangePage) {
+      onChangePage(vacancyId);
+    } else {
+      navigate(`/vacancies/${vacancyId}`);
+    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -30,18 +37,18 @@ export const VacanciesPage: React.FC<VacanciesPageProps> = ({ onChangePage }) =>
 
   return (
     <div>
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Vacatures</h1>
+      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px', color: 'var(--color-text)' }}>Vacatures</h1>
       
       <div className="card" style={{ padding: '16px' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
-            <tr style={{ borderBottom: '1px solid #e5e7eb', textAlign: 'left' }}>
-              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: '#374151' }}>Functie</th>
-              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: '#374151' }}>Bedrijf</th>
-              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: '#374151' }}>Locatie</th>
-              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: '#374151' }}>Status</th>
-              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: '#374151' }}>Prioriteit</th>
-              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: '#374151' }}>Type</th>
+            <tr style={{ borderBottom: '1px solid var(--color-border)', textAlign: 'left' }}>
+              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: 'var(--color-text)' }}>Functie</th>
+              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: 'var(--color-text)' }}>Bedrijf</th>
+              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: 'var(--color-text)' }}>Locatie</th>
+              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: 'var(--color-text)' }}>Status</th>
+              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: 'var(--color-text)' }}>Prioriteit</th>
+              <th style={{ padding: '12px', fontSize: '14px', fontWeight: '600', color: 'var(--color-text)' }}>Type</th>
             </tr>
           </thead>
           <tbody>
@@ -50,29 +57,29 @@ export const VacanciesPage: React.FC<VacanciesPageProps> = ({ onChangePage }) =>
                 key={vacancy.id}
                 onClick={() => handleVacancyClick(vacancy.id)}
                 style={{ 
-                  borderBottom: '1px solid #f3f4f6', 
+                  borderBottom: '1px solid var(--color-border)', 
                   cursor: 'pointer',
                   transition: 'background-color 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f9fafb';
+                  e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = 'transparent';
                 }}
               >
                 <td style={{ padding: '16px 12px' }}>
-                  <div style={{ fontWeight: '600', color: '#111827', marginBottom: '4px' }}>
+                  <div style={{ fontWeight: '600', color: 'var(--color-text)', marginBottom: '4px' }}>
                     {vacancy.title}
                   </div>
-                  <div style={{ fontSize: '14px', color: '#6b7280' }}>
+                  <div style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>
                     {vacancy.sector}
                   </div>
                 </td>
-                <td style={{ padding: '16px 12px', color: '#374151' }}>
+                <td style={{ padding: '16px 12px', color: 'var(--color-text)' }}>
                   {vacancy.company}
                 </td>
-                <td style={{ padding: '16px 12px', color: '#6b7280' }}>
+                <td style={{ padding: '16px 12px', color: 'var(--color-text-muted)' }}>
                   {vacancy.location}
                 </td>
                 <td style={{ padding: '16px 12px' }}>
@@ -85,7 +92,7 @@ export const VacanciesPage: React.FC<VacanciesPageProps> = ({ onChangePage }) =>
                     {vacancy.priority || 'Middel'}
                   </span>
                 </td>
-                <td style={{ padding: '16px 12px', color: '#6b7280' }}>
+                <td style={{ padding: '16px 12px', color: 'var(--color-text-muted)' }}>
                   {vacancy.employmentType}
                 </td>
               </tr>
@@ -99,12 +106,12 @@ export const VacanciesPage: React.FC<VacanciesPageProps> = ({ onChangePage }) =>
         <h2 style={{
           fontSize: '20px',
           fontWeight: '600',
-          color: '#111827',
+          color: 'var(--color-text)',
           marginBottom: '16px'
         }}>
           Funnel voorbeeld (mock data)
         </h2>
-        <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '16px' }}>
+        <p style={{ fontSize: '14px', color: 'var(--color-text-muted)', marginBottom: '16px' }}>
           Klik op een vacature hierboven om de gedetailleerde funnel per vacature te bekijken.
         </p>
       </div>

@@ -9,11 +9,11 @@ interface StatCardProps {
 export const StatCard: React.FC<StatCardProps> = ({ label, value, icon }) => {
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '16px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-      border: '1px solid #f1f5f9',
+      border: '1px solid var(--color-border)',
       transition: 'all 0.2s ease',
       position: 'relative',
       overflow: 'hidden'
@@ -47,7 +47,7 @@ export const StatCard: React.FC<StatCardProps> = ({ label, value, icon }) => {
         <div style={{
           fontSize: '32px',
           fontWeight: '700',
-          color: '#1e293b',
+          color: 'var(--color-text)',
           marginBottom: '8px',
           lineHeight: '1'
         }}>
@@ -57,7 +57,7 @@ export const StatCard: React.FC<StatCardProps> = ({ label, value, icon }) => {
         {/* Label */}
         <div style={{
           fontSize: '14px',
-          color: '#64748b',
+          color: 'var(--color-text-muted)',
           fontWeight: '500'
         }}>
           {label}

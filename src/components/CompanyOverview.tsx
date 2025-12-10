@@ -8,16 +8,16 @@ interface CompanyOverviewProps {
 export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => {
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       <h3 style={{
         fontSize: '18px',
         fontWeight: '600',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '20px'
       }}>
         Overzicht
@@ -28,7 +28,7 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => 
         <h4 style={{
           fontSize: '14px',
           fontWeight: '600',
-          color: '#374151',
+          color: 'var(--color-text)',
           marginBottom: '8px'
         }}>
           Beschrijving
@@ -36,7 +36,7 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => 
         <p style={{
           fontSize: '14px',
           lineHeight: '1.6',
-          color: '#374151',
+          color: 'var(--color-text)',
           margin: 0
         }}>
           {company.description}
@@ -55,14 +55,14 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => 
             <h4 style={{
               fontSize: '14px',
               fontWeight: '600',
-              color: '#374151',
+              color: 'var(--color-text)',
               marginBottom: '6px'
             }}>
               Sector
             </h4>
             <div style={{
               fontSize: '14px',
-              color: '#111827'
+              color: 'var(--color-text)'
             }}>
               {company.sector}
             </div>
@@ -75,14 +75,14 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => 
             <h4 style={{
               fontSize: '14px',
               fontWeight: '600',
-              color: '#374151',
+              color: 'var(--color-text)',
               marginBottom: '6px'
             }}>
               Grootte
             </h4>
             <div style={{
               fontSize: '14px',
-              color: '#111827'
+              color: 'var(--color-text)'
             }}>
               {company.size}
             </div>
@@ -94,19 +94,19 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => 
           <h4 style={{
             fontSize: '14px',
             fontWeight: '600',
-            color: '#374151',
+            color: 'var(--color-text)',
             marginBottom: '6px'
           }}>
             Locatie
           </h4>
           <div style={{
             fontSize: '14px',
-            color: '#111827',
+            color: 'var(--color-text)',
             display: 'flex',
             alignItems: 'center',
             gap: '6px'
           }}>
-            <span>📍</span>
+            <span>●</span>
             <span>{company.location}</span>
           </div>
         </div>
@@ -117,25 +117,25 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => 
             <h4 style={{
               fontSize: '14px',
               fontWeight: '600',
-              color: '#374151',
+              color: 'var(--color-text)',
               marginBottom: '6px'
             }}>
               Website
             </h4>
             <div style={{
               fontSize: '14px',
-              color: '#2563eb',
+              color: 'var(--color-primary)',
               display: 'flex',
               alignItems: 'center',
               gap: '6px'
             }}>
-              <span>🌐</span>
+              <span>◆</span>
               <a
                 href={company.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  color: '#2563eb',
+                  color: 'var(--color-primary)',
                   textDecoration: 'none'
                 }}
                 onMouseEnter={(e) => {
@@ -157,7 +157,7 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => 
             <h4 style={{
               fontSize: '14px',
               fontWeight: '600',
-              color: '#374151',
+              color: 'var(--color-text)',
               marginBottom: '6px'
             }}>
               Prioriteit
@@ -168,9 +168,9 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => 
               borderRadius: '12px',
               fontSize: '12px',
               fontWeight: '500',
-              color: 'white',
-              backgroundColor: company.priority === 'Hoog' ? '#dc2626' : 
-                               company.priority === 'Middel' ? '#f59e0b' : '#10b981'
+              color: 'var(--color-sidebar-text)',
+              backgroundColor: company.priority === 'Hoog' ? 'var(--color-danger)' : 
+                               company.priority === 'Middel' ? 'var(--color-warning)' : 'var(--color-success)'
             }}>
               {company.priority}
             </div>
@@ -182,14 +182,14 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ company }) => 
           <h4 style={{
             fontSize: '14px',
             fontWeight: '600',
-            color: '#374151',
+            color: 'var(--color-text)',
             marginBottom: '6px'
           }}>
             Toegevoegd op
           </h4>
           <div style={{
             fontSize: '14px',
-            color: '#111827'
+            color: 'var(--color-text)'
           }}>
             {company.createdAt}
           </div>

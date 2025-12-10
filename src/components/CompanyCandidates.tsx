@@ -9,54 +9,39 @@ export const CompanyCandidates: React.FC<CompanyCandidatesProps> = ({ candidates
   const getStageColor = (stage: string) => {
     switch (stage) {
       case 'Voorgesteld':
-        return '#dcfce7';
+        return 'var(--color-success-bg)';
       case 'Telefonisch interview':
-        return '#e9d5ff';
+        return 'var(--color-warning-bg)';
       case 'Gesolliciteerd':
-        return '#dbeafe';
+        return 'var(--color-primary-bg)';
       case 'In afwachting CV':
-        return '#fef3c7';
+        return 'var(--color-warning-bg)';
       case 'Geen gehoor':
-        return '#f3f4f6';
+        return 'var(--color-bg-secondary)';
       case 'Twijfel kandidaat':
-        return '#fed7aa';
+        return 'var(--color-warning-bg)';
       default:
-        return '#f3f4f6';
+        return 'var(--color-bg-secondary)';
     }
   };
 
-  const getStageTextColor = (stage: string) => {
-    switch (stage) {
-      case 'Voorgesteld':
-        return '#166534';
-      case 'Telefonisch interview':
-        return '#6b21a8';
-      case 'Gesolliciteerd':
-        return '#1e40af';
-      case 'In afwachting CV':
-        return '#a16207';
-      case 'Geen gehoor':
-        return '#374151';
-      case 'Twijfel kandidaat':
-        return '#c2410c';
-      default:
-        return '#374151';
-    }
+  const getStageTextColor = () => {
+    return 'var(--color-text)';
   };
 
   if (candidates.length === 0) {
     return (
       <div style={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-card-bg)',
         borderRadius: '8px',
         padding: '24px',
         boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <h3 style={{
           fontSize: '18px',
           fontWeight: '600',
-          color: '#111827',
+          color: 'var(--color-text)',
           marginBottom: '16px'
         }}>
           Kandidaten ({candidates.length})
@@ -64,7 +49,7 @@ export const CompanyCandidates: React.FC<CompanyCandidatesProps> = ({ candidates
         <div style={{
           textAlign: 'center',
           padding: '40px',
-          color: '#9ca3af',
+          color: 'var(--color-text-muted)',
           fontSize: '14px'
         }}>
           Geen kandidaten gevonden
@@ -75,16 +60,16 @@ export const CompanyCandidates: React.FC<CompanyCandidatesProps> = ({ candidates
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       <h3 style={{
         fontSize: '18px',
         fontWeight: '600',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '20px'
       }}>
         Kandidaten ({candidates.length})
@@ -96,12 +81,12 @@ export const CompanyCandidates: React.FC<CompanyCandidatesProps> = ({ candidates
         gridTemplateColumns: '2fr 2fr 150px',
         gap: '16px',
         padding: '12px 16px',
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'var(--color-bg-secondary)',
         borderRadius: '6px',
         marginBottom: '12px',
         fontSize: '12px',
         fontWeight: '600',
-        color: '#6b7280'
+        color: 'var(--color-text-muted)'
       }}>
         <div>Kandidaat</div>
         <div>Functie</div>
@@ -118,36 +103,36 @@ export const CompanyCandidates: React.FC<CompanyCandidatesProps> = ({ candidates
               gridTemplateColumns: '2fr 2fr 150px',
               gap: '16px',
               padding: '16px',
-              backgroundColor: '#f9fafb',
+              backgroundColor: 'var(--color-bg-secondary)',
               borderRadius: '6px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--color-border)',
               alignItems: 'center',
               transition: 'background-color 0.2s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f3f4f6';
+              e.currentTarget.style.backgroundColor = 'var(--color-button-hover-bg)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#f9fafb';
+              e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
             }}
           >
             {/* Candidate Name */}
             <div style={{
               fontSize: '14px',
               fontWeight: '500',
-              color: '#111827',
+              color: 'var(--color-text)',
               display: 'flex',
               alignItems: 'center',
               gap: '8px'
             }}>
-              <span>👤</span>
+              <span>●</span>
               <span>{candidate.candidateName}</span>
             </div>
 
             {/* Role */}
             <div style={{
               fontSize: '14px',
-              color: '#374151'
+              color: 'var(--color-text)'
             }}>
               {candidate.role}
             </div>
@@ -162,7 +147,7 @@ export const CompanyCandidates: React.FC<CompanyCandidatesProps> = ({ candidates
                 borderRadius: '12px',
                 fontSize: '11px',
                 fontWeight: '500',
-                color: getStageTextColor(candidate.stage),
+                color: getStageTextColor(),
                 backgroundColor: getStageColor(candidate.stage)
               }}>
                 {candidate.stage}
@@ -176,15 +161,15 @@ export const CompanyCandidates: React.FC<CompanyCandidatesProps> = ({ candidates
       <div style={{
         marginTop: '20px',
         padding: '12px',
-        backgroundColor: '#eff6ff',
+        backgroundColor: 'var(--color-primary-bg)',
         borderRadius: '6px',
-        border: '1px solid #dbeafe'
+        border: '1px solid var(--color-primary)'
       }}>
         <div style={{
           fontSize: '13px',
-          color: '#1e40af'
+          color: 'var(--color-primary)'
         }}>
-          👥 {candidates.length} kandidaat{candidates.length === 1 ? '' : 'en'} • 
+          ● {candidates.length} kandidaat{candidates.length === 1 ? '' : 'en'} • 
           {' '}{candidates.filter(c => c.stage === 'Voorgesteld').length} voorgesteld, 
           {' '}{candidates.filter(c => c.stage === 'Telefonisch interview').length} in interview
         </div>

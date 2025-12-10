@@ -17,9 +17,9 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
   };
 
   const getDueDateColor = (dueDate: string) => {
-    if (dueDate === 'Vandaag') return '#dc2626';
-    if (dueDate === 'Morgen') return '#f59e0b';
-    return '#6b7280';
+    if (dueDate === 'Vandaag') return 'var(--color-danger)';
+    if (dueDate === 'Morgen') return 'var(--color-warning)';
+    return 'var(--color-text-muted)';
   };
 
   const incompleteTasks = taskList.filter(task => !task.completed);
@@ -27,17 +27,17 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       {/* Title */}
       <h3 style={{
         fontSize: '18px',
         fontWeight: '600',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '20px'
       }}>
         Taken ({incompleteTasks.length}/{taskList.length})
@@ -53,9 +53,9 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
               alignItems: 'flex-start',
               gap: '12px',
               padding: '12px',
-              backgroundColor: task.completed ? '#f9fafb' : 'white',
+              backgroundColor: task.completed ? 'var(--color-bg-secondary)' : 'var(--color-card-bg)',
               borderRadius: '6px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--color-border)',
               transition: 'background-color 0.2s ease'
             }}
           >
@@ -76,7 +76,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{
                 fontSize: '14px',
-                color: task.completed ? '#9ca3af' : '#111827',
+                color: task.completed ? 'var(--color-text-muted)' : 'var(--color-text)',
                 textDecoration: task.completed ? 'line-through' : 'none',
                 marginBottom: '4px',
                 lineHeight: '1.4'
@@ -87,7 +87,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
               {/* Due Date */}
               <div style={{
                 fontSize: '12px',
-                color: task.completed ? '#d1d5db' : getDueDateColor(task.dueDate),
+                color: task.completed ? 'var(--color-text-muted)' : getDueDateColor(task.dueDate),
                 fontWeight: task.dueDate === 'Vandaag' ? '500' : '400'
               }}>
                 {task.dueDate}
@@ -102,15 +102,15 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
         <div style={{
           marginTop: '16px',
           padding: '12px',
-          backgroundColor: '#f0fdf4',
+          backgroundColor: 'var(--color-success-bg)',
           borderRadius: '6px',
-          border: '1px solid #bbf7d0'
+          border: '1px solid var(--color-border)'
         }}>
           <div style={{
             fontSize: '13px',
-            color: '#166534'
+            color: 'var(--color-success)'
           }}>
-            ✅ {completedTasks.length} ta{completedTasks.length === 1 ? 'ak' : 'ken'} voltooid
+            ● {completedTasks.length} ta{completedTasks.length === 1 ? 'ak' : 'ken'} voltooid
           </div>
         </div>
       )}

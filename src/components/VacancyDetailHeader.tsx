@@ -8,30 +8,30 @@ interface VacancyDetailHeaderProps {
 export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacancy }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Actief': return '#dcfce7';
-      case 'Gesloten': return '#fee2e2';
-      case 'Concept': return '#f3f4f6';
-      default: return '#f3f4f6';
+      case 'Actief': return 'var(--color-success-bg)';
+      case 'Gesloten': return 'var(--color-danger-bg)';
+      case 'Concept': return 'var(--color-bg-secondary)';
+      default: return 'var(--color-bg-secondary)';
     }
   };
 
   const getStatusTextColor = (status: string) => {
     switch (status) {
-      case 'Actief': return '#166534';
-      case 'Gesloten': return '#991b1b';
-      case 'Concept': return '#374151';
-      default: return '#374151';
+      case 'Actief': return 'var(--color-success)';
+      case 'Gesloten': return 'var(--color-danger)';
+      case 'Concept': return 'var(--color-text)';
+      default: return 'var(--color-text)';
     }
   };
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '16px',
       marginBottom: '16px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       <div style={{
         display: 'flex',
@@ -44,7 +44,7 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
           <h1 style={{
             fontSize: '24px',
             fontWeight: 'bold',
-            color: '#111827',
+            color: 'var(--color-text)',
             marginBottom: '8px',
             margin: '0 0 8px 0'
           }}>
@@ -53,14 +53,14 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
           
           <div style={{
             fontSize: '14px',
-            color: '#374151',
+            color: 'var(--color-text)',
             marginBottom: '8px',
             display: 'flex',
             alignItems: 'center',
             gap: '8px'
           }}>
             <span>{vacancy.company}</span>
-            <span style={{ color: '#9ca3af' }}>•</span>
+            <span style={{ color: 'var(--color-text-muted)' }}>•</span>
             <span>{vacancy.location}</span>
           </div>
 
@@ -89,9 +89,9 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
           <button
             style={{
               padding: '8px 16px',
-              backgroundColor: 'white',
-              color: '#374151',
-              border: '1px solid #d1d5db',
+              backgroundColor: 'var(--color-card-bg)',
+              color: 'var(--color-text)',
+              border: '1px solid var(--color-border)',
               borderRadius: '6px',
               fontSize: '14px',
               fontWeight: '500',
@@ -99,12 +99,10 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
               transition: 'all 0.2s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f9fafb';
-              e.currentTarget.style.borderColor = '#9ca3af';
+              e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-              e.currentTarget.style.borderColor = '#d1d5db';
+              e.currentTarget.style.backgroundColor = 'var(--color-card-bg)';
             }}
           >
             Bewerken
@@ -113,9 +111,9 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
           <button
             style={{
               padding: '8px 16px',
-              backgroundColor: 'white',
-              color: '#374151',
-              border: '1px solid #d1d5db',
+              backgroundColor: 'var(--color-card-bg)',
+              color: 'var(--color-text)',
+              border: '1px solid var(--color-border)',
               borderRadius: '6px',
               fontSize: '14px',
               fontWeight: '500',
@@ -123,12 +121,10 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
               transition: 'all 0.2s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f9fafb';
-              e.currentTarget.style.borderColor = '#9ca3af';
+              e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-              e.currentTarget.style.borderColor = '#d1d5db';
+              e.currentTarget.style.backgroundColor = 'var(--color-card-bg)';
             }}
           >
             Delen
@@ -141,8 +137,8 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
         display: 'flex',
         gap: '20px',
         fontSize: '13px',
-        color: '#6b7280',
-        borderTop: '1px solid #f3f4f6',
+        color: 'var(--color-text-muted)',
+        borderTop: '1px solid var(--color-border)',
         paddingTop: '12px'
       }}>
         <div>

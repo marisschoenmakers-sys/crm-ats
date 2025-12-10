@@ -47,18 +47,18 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
               border: 'none',
               fontSize: '20px',
               cursor: interactive ? 'pointer' : 'default',
-              color: star <= score ? '#fbbf24' : '#d1d5db',
+              color: star <= score ? 'var(--color-warning)' : 'var(--color-border)',
               transition: 'color 0.2s ease',
               padding: '0'
             }}
             onMouseEnter={(e) => {
               if (interactive && star > score) {
-                e.currentTarget.style.color = '#fbbf24';
+                e.currentTarget.style.color = 'var(--color-warning)';
               }
             }}
             onMouseLeave={(e) => {
               if (interactive && star > score) {
-                e.currentTarget.style.color = '#d1d5db';
+                e.currentTarget.style.color = 'var(--color-border)';
               }
             }}
           >
@@ -70,19 +70,19 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
   };
 
   const getScoreColor = (score: number): string => {
-    if (score >= 4.5) return '#059669';
-    if (score >= 3.5) return '#2563eb';
-    if (score >= 2.5) return '#f59e0b';
-    return '#dc2626';
+    if (score >= 4.5) return 'var(--color-success)';
+    if (score >= 3.5) return 'var(--color-primary)';
+    if (score >= 2.5) return 'var(--color-warning)';
+    return 'var(--color-danger)';
   };
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       {/* Header */}
       <div style={{
@@ -94,7 +94,7 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
         <h3 style={{
           fontSize: '18px',
           fontWeight: '600',
-          color: '#111827',
+          color: 'var(--color-text)',
           margin: 0
         }}>
           Evaluaties ({evaluations.length})
@@ -107,7 +107,7 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
           <div style={{
             textAlign: 'center',
             padding: '40px',
-            color: '#9ca3af',
+            color: 'var(--color-text-muted)',
             fontSize: '14px'
           }}>
             Nog geen evaluaties toegevoegd
@@ -118,9 +118,9 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
               key={evaluation.id}
               style={{
                 padding: '20px',
-                backgroundColor: '#f9fafb',
+                backgroundColor: 'var(--color-bg-secondary)',
                 borderRadius: '8px',
-                border: '1px solid #e5e7eb'
+                border: '1px solid var(--color-border)'
               }}
             >
               {/* Category Header */}
@@ -133,7 +133,7 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
                 <h4 style={{
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: '#111827',
+                  color: 'var(--color-text)',
                   margin: 0
                 }}>
                   {evaluation.category}
@@ -144,9 +144,9 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
                     onClick={() => handleEditStart(evaluation)}
                     style={{
                       padding: '6px 12px',
-                      backgroundColor: 'white',
-                      color: '#374151',
-                      border: '1px solid #d1d5db',
+                      backgroundColor: 'var(--color-card-bg)',
+                      color: 'var(--color-text)',
+                      border: '1px solid var(--color-border)',
                       borderRadius: '4px',
                       fontSize: '12px',
                       fontWeight: '500',
@@ -164,7 +164,7 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
                   <div>
                     <div style={{
                       fontSize: '12px',
-                      color: '#6b7280',
+                      color: 'var(--color-text-muted)',
                       marginBottom: '8px'
                     }}>
                       Klik op sterren om score aan te passen:
@@ -196,10 +196,11 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
                     style={{
                       width: '100%',
                       padding: '10px 12px',
-                      border: '1px solid #d1d5db',
+                      border: '1px solid var(--color-input-border)',
                       borderRadius: '6px',
                       fontSize: '14px',
-                      color: '#111827',
+                      color: 'var(--color-text)',
+                      backgroundColor: 'var(--color-input-bg)',
                       resize: 'vertical',
                       fontFamily: 'inherit'
                     }}
@@ -208,7 +209,7 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
                   <div style={{
                     fontSize: '14px',
                     lineHeight: '1.6',
-                    color: '#374151'
+                    color: 'var(--color-text)'
                   }}>
                     {evaluation.comment}
                   </div>
@@ -226,9 +227,9 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
                     onClick={handleCancel}
                     style={{
                       padding: '8px 16px',
-                      backgroundColor: 'white',
-                      color: '#374151',
-                      border: '1px solid #d1d5db',
+                      backgroundColor: 'var(--color-card-bg)',
+                      color: 'var(--color-text)',
+                      border: '1px solid var(--color-border)',
                       borderRadius: '6px',
                       fontSize: '14px',
                       fontWeight: '500',
@@ -242,8 +243,8 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
                     onClick={handleSave}
                     style={{
                       padding: '8px 16px',
-                      backgroundColor: '#2563eb',
-                      color: 'white',
+                      backgroundColor: 'var(--color-primary)',
+                      color: 'var(--color-sidebar-text)',
                       border: 'none',
                       borderRadius: '6px',
                       fontSize: '14px',
@@ -260,7 +261,7 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
               {editingId !== evaluation.id && (
                 <div style={{
                   fontSize: '12px',
-                  color: '#9ca3af',
+                  color: 'var(--color-text-muted)',
                   marginTop: '12px'
                 }}>
                   Laatst bijgewerkt: {evaluation.updatedAt}
@@ -276,15 +277,15 @@ export const CandidateEvaluations: React.FC<CandidateEvaluationsProps> = ({
         <div style={{
           marginTop: '24px',
           padding: '12px',
-          backgroundColor: '#eff6ff',
+          backgroundColor: 'var(--color-primary-bg)',
           borderRadius: '6px',
-          border: '1px solid #dbeafe'
+          border: '1px solid var(--color-primary)'
         }}>
           <div style={{
             fontSize: '13px',
-            color: '#1e40af'
+            color: 'var(--color-primary)'
           }}>
-            ⭐ Gemiddelde score: <strong style={{ color: '#1e40af' }}>
+            ★ Gemiddelde score: <strong style={{ color: 'var(--color-primary)' }}>
               {(evaluations.reduce((sum, evaluation) => sum + evaluation.score, 0) / evaluations.length).toFixed(1)}/5
             </strong> over {evaluations.length} categori{evaluations.length === 1 ? 'e' : 'ën'}
           </div>

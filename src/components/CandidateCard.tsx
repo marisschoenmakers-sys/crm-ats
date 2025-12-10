@@ -12,25 +12,25 @@ export const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => {
 
   const getStageColor = (stage: 'Gesolliciteerd' | 'Geen gehoor' | 'Telefonisch interview' | 'In afwachting CV' | 'Twijfel kandidaat' | 'Afwijzen' | 'Voorgesteld') => {
     const colors = {
-      'Gesolliciteerd': '#dbeafe',
-      'Geen gehoor': '#f3f4f6',
-      'Telefonisch interview': '#e9d5ff',
-      'In afwachting CV': '#fef3c7',
-      'Twijfel kandidaat': '#fed7aa',
-      'Afwijzen': '#fee2e2',
-      'Voorgesteld': '#dcfce7'
+      'Gesolliciteerd': 'var(--color-primary-bg)',
+      'Geen gehoor': 'var(--color-bg-secondary)',
+      'Telefonisch interview': 'var(--color-warning-bg)',
+      'In afwachting CV': 'var(--color-warning-bg)',
+      'Twijfel kandidaat': 'var(--color-warning-bg)',
+      'Afwijzen': 'var(--color-danger-bg)',
+      'Voorgesteld': 'var(--color-success-bg)'
     };
-    return colors[stage] || '#f3f4f6';
+    return colors[stage] || 'var(--color-bg-secondary)';
   };
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '12px',
       marginBottom: '12px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb',
+      border: '1px solid var(--color-border)',
       cursor: 'pointer',
       transition: 'box-shadow 0.2s ease, transform 0.2s ease'
     }}
@@ -49,13 +49,13 @@ export const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => {
           width: '48px',
           height: '48px',
           borderRadius: '50%',
-          backgroundColor: candidate.avatarUrl ? 'transparent' : '#e5e7eb',
+          backgroundColor: candidate.avatarUrl ? 'transparent' : 'var(--color-border)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           fontSize: '16px',
           fontWeight: '600',
-          color: '#374151',
+          color: 'var(--color-text)',
           flexShrink: 0,
           overflow: 'hidden'
         }}>
@@ -76,7 +76,7 @@ export const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => {
           <div style={{
             fontSize: '16px',
             fontWeight: '600',
-            color: '#111827',
+            color: 'var(--color-text)',
             marginBottom: '4px'
           }}>
             {candidate.fullName}
@@ -85,7 +85,7 @@ export const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => {
           {/* Role + Vacancy */}
           <div style={{
             fontSize: '14px',
-            color: '#374151',
+            color: 'var(--color-text)',
             marginBottom: '4px'
           }}>
             {candidate.role} bij {candidate.vacancy.split(' bij ')[1] || candidate.vacancy}
@@ -94,10 +94,10 @@ export const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => {
           {/* Location */}
           <div style={{
             fontSize: '13px',
-            color: '#6b7280',
+            color: 'var(--color-text-muted)',
             marginBottom: '6px'
           }}>
-            📍 {candidate.location}
+            ● {candidate.location}
           </div>
 
           {/* Stage Badge */}
@@ -109,7 +109,7 @@ export const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => {
               fontSize: '12px',
               fontWeight: '500',
               backgroundColor: getStageColor(candidate.stage),
-              color: '#374151'
+              color: 'var(--color-text)'
             }}>
               {candidate.stage}
             </span>
@@ -131,9 +131,9 @@ export const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => {
                     borderRadius: '10px',
                     fontSize: '10px',
                     fontWeight: '500',
-                    backgroundColor: '#f3f4f6',
-                    color: '#6b7280',
-                    border: '1px solid #e5e7eb'
+                    backgroundColor: 'var(--color-bg-secondary)',
+                    color: 'var(--color-text-muted)',
+                    border: '1px solid var(--color-border)'
                   }}
                 >
                   {tag}
@@ -142,7 +142,7 @@ export const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => {
               {candidate.tags.length > 3 && (
                 <span style={{
                   fontSize: '10px',
-                  color: '#9ca3af',
+                  color: 'var(--color-text-muted)',
                   fontStyle: 'italic'
                 }}>
                   +{candidate.tags.length - 3}

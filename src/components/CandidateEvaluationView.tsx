@@ -46,17 +46,17 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 4.5) return '#22c55e';
-    if (score >= 3.5) return '#84cc16';
-    if (score >= 2.5) return '#f59e0b';
-    if (score >= 1.5) return '#fb923c';
-    return '#ef4444';
+    if (score >= 4.5) return 'var(--color-success)';
+    if (score >= 3.5) return 'var(--color-success)';
+    if (score >= 2.5) return 'var(--color-warning)';
+    if (score >= 1.5) return 'var(--color-warning)';
+    return 'var(--color-danger)';
   };
 
   const getCompletionColor = (rate: number) => {
-    if (rate >= 80) return '#22c55e';
-    if (rate >= 60) return '#f59e0b';
-    return '#ef4444';
+    if (rate >= 80) return 'var(--color-success)';
+    if (rate >= 60) return 'var(--color-warning)';
+    return 'var(--color-danger)';
   };
 
   // Mock vacancies for dropdown
@@ -73,10 +73,10 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Header */}
       <div style={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-card-bg)',
         borderRadius: '12px',
         padding: '24px',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <div style={{
           display: 'flex',
@@ -88,7 +88,7 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
             <h2 style={{
               fontSize: '24px',
               fontWeight: '700',
-              color: '#111827',
+              color: 'var(--color-text)',
               margin: '0 0 8px 0'
             }}>
               Evaluatie: {candidateName}
@@ -96,7 +96,7 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
             {selectedVacancy && (
               <p style={{
                 fontSize: '14px',
-                color: '#6b7280',
+                color: 'var(--color-text-muted)',
                 margin: 0
               }}>
                 Vacature: {selectedVacancy.title}
@@ -110,9 +110,9 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
               onClick={() => setShowHistory(!showHistory)}
               style={{
                 padding: '8px 16px',
-                backgroundColor: showHistory ? '#3b82f6' : 'white',
-                color: showHistory ? 'white' : '#374151',
-                border: '1px solid #d1d5db',
+                backgroundColor: showHistory ? 'var(--color-primary)' : 'var(--color-card-bg)',
+                color: showHistory ? 'var(--color-sidebar-text)' : 'var(--color-text)',
+                border: '1px solid var(--color-border)',
                 borderRadius: '6px',
                 fontSize: '14px',
                 fontWeight: '500',
@@ -132,14 +132,14 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
             alignItems: 'center',
             gap: '12px',
             padding: '16px',
-            backgroundColor: '#f8fafc',
+            backgroundColor: 'var(--color-bg-secondary)',
             borderRadius: '8px',
-            border: '1px solid #e5e7eb'
+            border: '1px solid var(--color-border)'
           }}>
             <label style={{
               fontSize: '14px',
               fontWeight: '500',
-              color: '#374151',
+              color: 'var(--color-text)',
               minWidth: '80px'
             }}>
               Vacature:
@@ -151,10 +151,10 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
                 flex: 1,
                 maxWidth: '300px',
                 padding: '8px 12px',
-                border: '1px solid #d1d5db',
+                border: '1px solid var(--color-border)',
                 borderRadius: '6px',
                 fontSize: '14px',
-                backgroundColor: 'white'
+                backgroundColor: 'var(--color-card-bg)'
               }}
             >
               <option value="">Selecteer een vacature...</option>
@@ -176,14 +176,14 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
           gap: '16px'
         }}>
           <div style={{
-            backgroundColor: 'white',
+            backgroundColor: 'var(--color-card-bg)',
             borderRadius: '8px',
             padding: '16px',
-            border: '1px solid #e5e7eb'
+            border: '1px solid var(--color-border)'
           }}>
             <div style={{
               fontSize: '12px',
-              color: '#6b7280',
+              color: 'var(--color-text-muted)',
               marginBottom: '4px',
               textTransform: 'uppercase',
               fontWeight: '500'
@@ -193,21 +193,21 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
             <div style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: currentEvaluation ? getScoreColor(currentEvaluation.averageScore) : '#6b7280'
+              color: currentEvaluation ? getScoreColor(currentEvaluation.averageScore) : 'var(--color-text-muted)'
             }}>
               {currentEvaluation ? currentEvaluation.averageScore.toFixed(1) : '-'}
             </div>
           </div>
 
           <div style={{
-            backgroundColor: 'white',
+            backgroundColor: 'var(--color-card-bg)',
             borderRadius: '8px',
             padding: '16px',
-            border: '1px solid #e5e7eb'
+            border: '1px solid var(--color-border)'
           }}>
             <div style={{
               fontSize: '12px',
-              color: '#6b7280',
+              color: 'var(--color-text-muted)',
               marginBottom: '4px',
               textTransform: 'uppercase',
               fontWeight: '500'
@@ -224,14 +224,14 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
           </div>
 
           <div style={{
-            backgroundColor: 'white',
+            backgroundColor: 'var(--color-card-bg)',
             borderRadius: '8px',
             padding: '16px',
-            border: '1px solid #e5e7eb'
+            border: '1px solid var(--color-border)'
           }}>
             <div style={{
               fontSize: '12px',
-              color: '#6b7280',
+              color: 'var(--color-text-muted)',
               marginBottom: '4px',
               textTransform: 'uppercase',
               fontWeight: '500'
@@ -241,21 +241,21 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
             <div style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: '#111827'
+              color: 'var(--color-text)'
             }}>
               {currentEvaluation?.categories.length || 0}
             </div>
           </div>
 
           <div style={{
-            backgroundColor: 'white',
+            backgroundColor: 'var(--color-card-bg)',
             borderRadius: '8px',
             padding: '16px',
-            border: '1px solid #e5e7eb'
+            border: '1px solid var(--color-border)'
           }}>
             <div style={{
               fontSize: '12px',
-              color: '#6b7280',
+              color: 'var(--color-text-muted)',
               marginBottom: '4px',
               textTransform: 'uppercase',
               fontWeight: '500'
@@ -265,7 +265,7 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
             <div style={{
               fontSize: '14px',
               fontWeight: '500',
-              color: '#111827'
+              color: 'var(--color-text)'
             }}>
               {currentEvaluation ? new Date(currentEvaluation.lastUpdated).toLocaleDateString('nl-NL') : '-'}
             </div>
@@ -286,22 +286,22 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
       {/* No evaluation selected */}
       {!currentEvaluation && selectedVacancyId && (
         <div style={{
-          backgroundColor: 'white',
+          backgroundColor: 'var(--color-card-bg)',
           borderRadius: '12px',
           padding: '40px',
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--color-border)',
           textAlign: 'center'
         }}>
           <div style={{
             fontSize: '16px',
-            color: '#6b7280',
+            color: 'var(--color-text-muted)',
             marginBottom: '8px'
           }}>
             Geen evaluatie beschikbaar
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#9ca3af'
+            color: 'var(--color-text-muted)'
           }}>
             Er is nog geen evaluatie template gekoppeld aan deze vacature
           </div>
@@ -311,22 +311,22 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
       {/* No vacancy selected */}
       {!selectedVacancyId && (
         <div style={{
-          backgroundColor: 'white',
+          backgroundColor: 'var(--color-card-bg)',
           borderRadius: '12px',
           padding: '40px',
-          border: '1px solid #e5e7eb',
+          border: '1px solid var(--color-border)',
           textAlign: 'center'
         }}>
           <div style={{
             fontSize: '16px',
-            color: '#6b7280',
+            color: 'var(--color-text-muted)',
             marginBottom: '8px'
           }}>
             Selecteer een vacature
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#9ca3af'
+            color: 'var(--color-text-muted)'
           }}>
             Kies een vacature om de evaluatie van {candidateName} te bekijken
           </div>
@@ -336,15 +336,15 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
       {/* History Section */}
       {showHistory && (
         <div style={{
-          backgroundColor: 'white',
+          backgroundColor: 'var(--color-card-bg)',
           borderRadius: '12px',
           padding: '24px',
-          border: '1px solid #e5e7eb'
+          border: '1px solid var(--color-border)'
         }}>
           <h3 style={{
             fontSize: '18px',
             fontWeight: '600',
-            color: '#111827',
+            color: 'var(--color-text)',
             margin: '0 0 16px 0'
           }}>
             Evaluatie Historie
@@ -354,9 +354,9 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
             {/* Mock history items */}
             <div style={{
               padding: '12px',
-              backgroundColor: '#f8fafc',
+              backgroundColor: 'var(--color-bg-secondary)',
               borderRadius: '8px',
-              border: '1px solid #e5e7eb'
+              border: '1px solid var(--color-border)'
             }}>
               <div style={{
                 display: 'flex',
@@ -367,14 +367,14 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
                   <div style={{
                     fontSize: '14px',
                     fontWeight: '500',
-                    color: '#111827',
+                    color: 'var(--color-text)',
                     marginBottom: '4px'
                   }}>
                     Sales Professional - Telefoon screening
                   </div>
                   <div style={{
                     fontSize: '12px',
-                    color: '#6b7280'
+                    color: 'var(--color-text-muted)'
                   }}>
                     25 november 2024 door Jan Janssen
                   </div>
@@ -391,9 +391,9 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
 
             <div style={{
               padding: '12px',
-              backgroundColor: '#f8fafc',
+              backgroundColor: 'var(--color-bg-secondary)',
               borderRadius: '8px',
-              border: '1px solid #e5e7eb'
+              border: '1px solid var(--color-border)'
             }}>
               <div style={{
                 display: 'flex',
@@ -404,14 +404,14 @@ export const CandidateEvaluationView: React.FC<CandidateEvaluationViewProps> = (
                   <div style={{
                     fontSize: '14px',
                     fontWeight: '500',
-                    color: '#111827',
+                    color: 'var(--color-text)',
                     marginBottom: '4px'
                   }}>
                     Senior Developer - Technisch interview
                   </div>
                   <div style={{
                     fontSize: '12px',
-                    color: '#6b7280'
+                    color: 'var(--color-text-muted)'
                   }}>
                     20 november 2024 door Piet Pietersen
                   </div>

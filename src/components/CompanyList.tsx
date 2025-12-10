@@ -16,7 +16,7 @@ export const CompanyList: React.FC<CompanyListProps> = ({
       <div style={{
         textAlign: 'center',
         padding: '60px 20px',
-        color: '#9ca3af',
+        color: 'var(--color-text-muted)',
         fontSize: '14px'
       }}>
         Geen bedrijven gevonden

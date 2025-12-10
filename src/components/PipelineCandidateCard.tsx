@@ -13,12 +13,12 @@ export const PipelineCandidateCard: React.FC<PipelineCandidateCardProps> = ({ ca
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '12px',
       marginBottom: '8px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb',
+      border: '1px solid var(--color-border)',
       cursor: 'pointer',
       transition: 'box-shadow 0.2s ease, transform 0.2s ease'
     }}
@@ -35,7 +35,7 @@ export const PipelineCandidateCard: React.FC<PipelineCandidateCardProps> = ({ ca
       <div style={{
         fontSize: '14px',
         fontWeight: '600',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '6px'
       }}>
         {candidate.name}
@@ -44,7 +44,7 @@ export const PipelineCandidateCard: React.FC<PipelineCandidateCardProps> = ({ ca
       {/* Role */}
       <div style={{
         fontSize: '13px',
-        color: '#374151',
+        color: 'var(--color-text)',
         marginBottom: '4px'
       }}>
         {candidate.role}
@@ -53,7 +53,7 @@ export const PipelineCandidateCard: React.FC<PipelineCandidateCardProps> = ({ ca
       {/* Company + Location */}
       <div style={{
         fontSize: '12px',
-        color: '#6b7280',
+        color: 'var(--color-text-muted)',
         marginBottom: '4px'
       }}>
         {candidate.company} • {candidate.location}
@@ -62,7 +62,7 @@ export const PipelineCandidateCard: React.FC<PipelineCandidateCardProps> = ({ ca
       {/* Stage */}
       <div style={{
         fontSize: '11px',
-        color: '#2563eb',
+        color: 'var(--color-primary)',
         fontWeight: '500',
         marginBottom: '4px'
       }}>
@@ -72,7 +72,7 @@ export const PipelineCandidateCard: React.FC<PipelineCandidateCardProps> = ({ ca
       {/* Applied Date */}
       <div style={{
         fontSize: '11px',
-        color: '#9ca3af',
+        color: 'var(--color-text-muted)',
         fontStyle: 'italic'
       }}>
         Sinds: {candidate.appliedAt}
@@ -82,10 +82,10 @@ export const PipelineCandidateCard: React.FC<PipelineCandidateCardProps> = ({ ca
       {candidate.note && (
         <div style={{
           fontSize: '11px',
-          color: '#6b7280',
+          color: 'var(--color-text-muted)',
           marginTop: '6px',
           padding: '4px 6px',
-          backgroundColor: '#f9fafb',
+          backgroundColor: 'var(--color-bg-secondary)',
           borderRadius: '4px',
           fontStyle: 'italic'
         }}>
@@ -97,7 +97,7 @@ export const PipelineCandidateCard: React.FC<PipelineCandidateCardProps> = ({ ca
       {candidate.source && (
         <div style={{
           fontSize: '10px',
-          color: '#9ca3af',
+          color: 'var(--color-text-muted)',
           marginTop: '4px'
         }}>
           Bron: {candidate.source}

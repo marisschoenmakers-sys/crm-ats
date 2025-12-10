@@ -49,23 +49,23 @@ export const DashboardPage: React.FC = () => {
   const iconStyle = {
     width: '20px',
     height: '20px',
-    color: '#64748b'
+    color: 'var(--color-text-muted)'
   };
 
   return (
     <div style={{
-      backgroundColor: '#f8fafc',
+      backgroundColor: 'var(--color-bg-secondary)',
       minHeight: '100vh',
       padding: '24px'
     }}>
       {/* Welcome Header */}
       <div style={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-card-bg)',
         borderRadius: '16px',
         padding: '32px',
         marginBottom: '32px',
         boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-        border: '1px solid #f1f5f9'
+        border: '1px solid var(--color-border)'
       }}>
         <div style={{
           display: 'flex',
@@ -76,7 +76,7 @@ export const DashboardPage: React.FC = () => {
             <h1 style={{
               fontSize: '32px',
               fontWeight: '700',
-              color: '#1e293b',
+              color: 'var(--color-text)',
               marginBottom: '8px',
               margin: 0
             }}>
@@ -84,7 +84,7 @@ export const DashboardPage: React.FC = () => {
             </h1>
             <p style={{
               fontSize: '16px',
-              color: '#64748b',
+              color: 'var(--color-text-muted)',
               margin: 0,
               fontWeight: '400'
             }}>
@@ -99,8 +99,8 @@ export const DashboardPage: React.FC = () => {
           }}>
             <button style={{
               padding: '12px 20px',
-              backgroundColor: '#3b82f6',
-              color: 'white',
+              backgroundColor: 'var(--color-primary)',
+              color: 'var(--color-sidebar-text)',
               border: 'none',
               borderRadius: '12px',
               fontSize: '14px',
@@ -111,14 +111,14 @@ export const DashboardPage: React.FC = () => {
               gap: '8px',
               transition: 'all 0.2s ease'
             }}>
-              <PlusIcon style={{ width: '16px', height: '16px', color: 'white' }} />
+              <PlusIcon style={{ width: '16px', height: '16px', color: 'var(--color-sidebar-text)' }} />
               Nieuwe vacature
             </button>
             <button style={{
               padding: '12px 20px',
-              backgroundColor: 'white',
-              color: '#475569',
-              border: '1px solid #e2e8f0',
+              backgroundColor: 'var(--color-card-bg)',
+              color: 'var(--color-text)',
+              border: '1px solid var(--color-border)',
               borderRadius: '12px',
               fontSize: '14px',
               fontWeight: '600',
@@ -128,7 +128,7 @@ export const DashboardPage: React.FC = () => {
               gap: '8px',
               transition: 'all 0.2s ease'
             }}>
-              <BarChartIcon style={{ width: '16px', height: '16px', color: '#475569' }} />
+              <BarChartIcon style={{ width: '16px', height: '16px', color: 'var(--color-text-muted)' }} />
               Rapportage
             </button>
           </div>
@@ -142,7 +142,7 @@ export const DashboardPage: React.FC = () => {
         <h2 style={{
           fontSize: '20px',
           fontWeight: '600',
-          color: '#1e293b',
+          color: 'var(--color-text)',
           marginBottom: '16px',
           display: 'flex',
           alignItems: 'center',
@@ -160,22 +160,22 @@ export const DashboardPage: React.FC = () => {
           <StatCard
             label="Openstaande vacatures"
             value={dashboardStats.openVacancies}
-            icon={<BriefcaseIcon style={{ width: '48px', height: '48px', color: '#1e293b', opacity: 0.1 }} />}
+            icon={<BriefcaseIcon style={{ width: '48px', height: '48px', color: 'var(--color-text)', opacity: 0.1 }} />}
           />
           <StatCard
             label="Actieve kandidaten"
             value={dashboardStats.activeCandidates}
-            icon={<UsersIcon style={{ width: '48px', height: '48px', color: '#1e293b', opacity: 0.1 }} />}
+            icon={<UsersIcon style={{ width: '48px', height: '48px', color: 'var(--color-text)', opacity: 0.1 }} />}
           />
           <StatCard
             label="Interviews deze week"
             value={dashboardStats.interviewsThisWeek}
-            icon={<CalendarIcon style={{ width: '48px', height: '48px', color: '#1e293b', opacity: 0.1 }} />}
+            icon={<CalendarIcon style={{ width: '48px', height: '48px', color: 'var(--color-text)', opacity: 0.1 }} />}
           />
           <StatCard
             label="Gem. time-to-hire"
             value={dashboardStats.avgTimeToHire}
-            icon={<ClockIcon style={{ width: '48px', height: '48px', color: '#1e293b', opacity: 0.1 }} />}
+            icon={<ClockIcon style={{ width: '48px', height: '48px', color: 'var(--color-text)', opacity: 0.1 }} />}
           />
         </div>
       </div>
@@ -198,7 +198,7 @@ export const DashboardPage: React.FC = () => {
             <h2 style={{
               fontSize: '20px',
               fontWeight: '600',
-              color: '#1e293b',
+              color: 'var(--color-text)',
               marginBottom: '16px',
               display: 'flex',
               alignItems: 'center',
@@ -215,7 +215,7 @@ export const DashboardPage: React.FC = () => {
             <h2 style={{
               fontSize: '20px',
               fontWeight: '600',
-              color: '#1e293b',
+              color: 'var(--color-text)',
               marginBottom: '16px',
               display: 'flex',
               alignItems: 'center',
@@ -239,7 +239,7 @@ export const DashboardPage: React.FC = () => {
             <h2 style={{
               fontSize: '20px',
               fontWeight: '600',
-              color: '#1e293b',
+              color: 'var(--color-text)',
               marginBottom: '16px',
               display: 'flex',
               alignItems: 'center',
@@ -256,7 +256,7 @@ export const DashboardPage: React.FC = () => {
             <h2 style={{
               fontSize: '20px',
               fontWeight: '600',
-              color: '#1e293b',
+              color: 'var(--color-text)',
               marginBottom: '16px',
               display: 'flex',
               alignItems: 'center',
@@ -275,7 +275,7 @@ export const DashboardPage: React.FC = () => {
         <h2 style={{
           fontSize: '20px',
           fontWeight: '600',
-          color: '#1e293b',
+          color: 'var(--color-text)',
           marginBottom: '16px',
           display: 'flex',
           alignItems: 'center',

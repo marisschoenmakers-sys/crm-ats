@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { CompanyDetailHeader } from '../components/CompanyDetailHeader';
 import { CompanyOverview } from '../components/CompanyOverview';
 import { CompanyContacts } from '../components/CompanyContacts';
@@ -15,12 +16,15 @@ import {
 import type { CompanyNote } from '../types/company';
 
 interface CompanyDetailPageProps {
-  companyId: string;
+  companyId?: string;
 }
 
 export const CompanyDetailPage: React.FC<CompanyDetailPageProps> = ({ 
-  companyId 
+  companyId: propCompanyId 
 }) => {
+  const { id: paramId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const companyId = propCompanyId || paramId || '';
   const [activeTab, setActiveTab] = useState<'overzicht' | 'contactpersonen' | 'vacatures' | 'kandidaten' | 'notities'>('overzicht');
   const [notes, setNotes] = useState<CompanyNote[]>(companyNotes.filter(n => n.companyId === companyId));
 
@@ -35,7 +39,7 @@ export const CompanyDetailPage: React.FC<CompanyDetailPageProps> = ({
       <div style={{
         textAlign: 'center',
         padding: '60px',
-        color: '#9ca3af',
+        color: 'var(--color-text-muted)',
         fontSize: '16px'
       }}>
         Bedrijf niet gevonden
@@ -81,17 +85,35 @@ export const CompanyDetailPage: React.FC<CompanyDetailPageProps> = ({
 
   return (
     <div>
+      {/* Back Button */}
+      <button
+        onClick={() => navigate('/companies')}
+        style={{
+          padding: '8px 16px',
+          backgroundColor: 'transparent',
+          color: 'var(--color-primary)',
+          border: '1px solid var(--color-border)',
+          borderRadius: '6px',
+          fontSize: '14px',
+          fontWeight: '500',
+          cursor: 'pointer',
+          marginBottom: '16px',
+        }}
+      >
+        ← Terug naar bedrijven
+      </button>
+
       {/* Header */}
       <CompanyDetailHeader company={company} />
 
       {/* Tab Navigation */}
       <div style={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-card-bg)',
         borderRadius: '8px',
         padding: '8px',
         marginBottom: '24px',
         boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <div style={{
           display: 'flex',
@@ -103,8 +125,8 @@ export const CompanyDetailPage: React.FC<CompanyDetailPageProps> = ({
               onClick={() => setActiveTab(tab.id)}
               style={{
                 padding: '10px 16px',
-                backgroundColor: activeTab === tab.id ? '#2563eb' : 'transparent',
-                color: activeTab === tab.id ? 'white' : '#374151',
+                backgroundColor: activeTab === tab.id ? 'var(--color-primary)' : 'transparent',
+                color: activeTab === tab.id ? 'var(--color-sidebar-text)' : 'var(--color-text)',
                 border: 'none',
                 borderRadius: '6px',
                 fontSize: '14px',
@@ -114,7 +136,7 @@ export const CompanyDetailPage: React.FC<CompanyDetailPageProps> = ({
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== tab.id) {
-                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                  e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
                 }
               }}
               onMouseLeave={(e) => {

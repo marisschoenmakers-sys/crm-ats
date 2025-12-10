@@ -9,38 +9,38 @@ export const CompanyVacancies: React.FC<CompanyVacanciesProps> = ({ vacancies })
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'actief':
-        return '#dcfce7';
+        return 'var(--color-success-bg)';
       case 'gesloten':
-        return '#fee2e2';
+        return 'var(--color-danger-bg)';
       default:
-        return '#f3f4f6';
+        return 'var(--color-bg-secondary)';
     }
   };
 
   const getStatusTextColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'actief':
-        return '#166534';
+        return 'var(--color-success)';
       case 'gesloten':
-        return '#dc2626';
+        return 'var(--color-danger)';
       default:
-        return '#374151';
+        return 'var(--color-text)';
     }
   };
 
   if (vacancies.length === 0) {
     return (
       <div style={{
-        backgroundColor: 'white',
+        backgroundColor: 'var(--color-card-bg)',
         borderRadius: '8px',
         padding: '24px',
         boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        border: '1px solid #e5e7eb'
+        border: '1px solid var(--color-border)'
       }}>
         <h3 style={{
           fontSize: '18px',
           fontWeight: '600',
-          color: '#111827',
+          color: 'var(--color-text)',
           marginBottom: '16px'
         }}>
           Vacatures ({vacancies.length})
@@ -48,7 +48,7 @@ export const CompanyVacancies: React.FC<CompanyVacanciesProps> = ({ vacancies })
         <div style={{
           textAlign: 'center',
           padding: '40px',
-          color: '#9ca3af',
+          color: 'var(--color-text-muted)',
           fontSize: '14px'
         }}>
           Geen vacatures gevonden
@@ -59,16 +59,16 @@ export const CompanyVacancies: React.FC<CompanyVacanciesProps> = ({ vacancies })
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       <h3 style={{
         fontSize: '18px',
         fontWeight: '600',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '20px'
       }}>
         Vacatures ({vacancies.length})
@@ -80,12 +80,12 @@ export const CompanyVacancies: React.FC<CompanyVacanciesProps> = ({ vacancies })
         gridTemplateColumns: '2fr 1fr 100px',
         gap: '16px',
         padding: '12px 16px',
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'var(--color-bg-secondary)',
         borderRadius: '6px',
         marginBottom: '12px',
         fontSize: '12px',
         fontWeight: '600',
-        color: '#6b7280'
+        color: 'var(--color-text-muted)'
       }}>
         <div>Vacature</div>
         <div>Locatie</div>
@@ -102,24 +102,24 @@ export const CompanyVacancies: React.FC<CompanyVacanciesProps> = ({ vacancies })
               gridTemplateColumns: '2fr 1fr 100px',
               gap: '16px',
               padding: '16px',
-              backgroundColor: '#f9fafb',
+              backgroundColor: 'var(--color-bg-secondary)',
               borderRadius: '6px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--color-border)',
               alignItems: 'center',
               transition: 'background-color 0.2s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f3f4f6';
+              e.currentTarget.style.backgroundColor = 'var(--color-button-hover-bg)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#f9fafb';
+              e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
             }}
           >
             {/* Vacancy Title */}
             <div style={{
               fontSize: '14px',
               fontWeight: '500',
-              color: '#111827'
+              color: 'var(--color-text)'
             }}>
               {vacancy.vacancyTitle}
             </div>
@@ -127,12 +127,12 @@ export const CompanyVacancies: React.FC<CompanyVacanciesProps> = ({ vacancies })
             {/* Location */}
             <div style={{
               fontSize: '14px',
-              color: '#374151',
+              color: 'var(--color-text)',
               display: 'flex',
               alignItems: 'center',
               gap: '6px'
             }}>
-              <span>📍</span>
+              <span>●</span>
               <span>{vacancy.location}</span>
             </div>
 
@@ -160,15 +160,15 @@ export const CompanyVacancies: React.FC<CompanyVacanciesProps> = ({ vacancies })
       <div style={{
         marginTop: '20px',
         padding: '12px',
-        backgroundColor: '#f0fdf4',
+        backgroundColor: 'var(--color-success-bg)',
         borderRadius: '6px',
-        border: '1px solid #bbf7d0'
+        border: '1px solid var(--color-success)'
       }}>
         <div style={{
           fontSize: '13px',
-          color: '#166534'
+          color: 'var(--color-success)'
         }}>
-          📋 {vacancies.length} vacature{vacancies.length === 1 ? '' : 's'} • 
+          ● {vacancies.length} vacature{vacancies.length === 1 ? '' : 's'} • 
           {' '}{vacancies.filter(v => v.status.toLowerCase() === 'actief').length} actief, 
           {' '}{vacancies.filter(v => v.status.toLowerCase() === 'gesloten').length} gesloten
         </div>

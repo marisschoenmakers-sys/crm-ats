@@ -17,17 +17,17 @@ export const RecentNotes: React.FC<RecentNotesProps> = ({ notes }) => {
 
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: 'var(--color-card-bg)',
       borderRadius: '8px',
       padding: '24px',
       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e5e7eb'
+      border: '1px solid var(--color-border)'
     }}>
       {/* Title */}
       <h3 style={{
         fontSize: '18px',
         fontWeight: '600',
-        color: '#111827',
+        color: 'var(--color-text)',
         marginBottom: '20px'
       }}>
         Recente Notities ({notes.length})
@@ -40,9 +40,9 @@ export const RecentNotes: React.FC<RecentNotesProps> = ({ notes }) => {
             key={note.id}
             style={{
               padding: '16px',
-              backgroundColor: '#f9fafb',
+              backgroundColor: 'var(--color-bg-secondary)',
               borderRadius: '6px',
-              border: '1px solid #e5e7eb'
+              border: '1px solid var(--color-border)'
             }}
           >
             {/* Note Header */}
@@ -57,13 +57,13 @@ export const RecentNotes: React.FC<RecentNotesProps> = ({ notes }) => {
                 width: '32px',
                 height: '32px',
                 borderRadius: '50%',
-                backgroundColor: '#e5e7eb',
+                backgroundColor: 'var(--color-border)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '12px',
                 fontWeight: '600',
-                color: '#374151',
+                color: 'var(--color-text)',
                 flexShrink: 0
               }}>
                 {getAuthorInitials(note.author)}
@@ -74,13 +74,13 @@ export const RecentNotes: React.FC<RecentNotesProps> = ({ notes }) => {
                 <div style={{
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#111827'
+                  color: 'var(--color-text)'
                 }}>
                   {note.author}
                 </div>
                 <div style={{
                   fontSize: '12px',
-                  color: '#9ca3af'
+                  color: 'var(--color-text-muted)'
                 }}>
                   {note.createdAt}
                 </div>
@@ -91,7 +91,7 @@ export const RecentNotes: React.FC<RecentNotesProps> = ({ notes }) => {
             <div style={{
               fontSize: '14px',
               lineHeight: '1.5',
-              color: '#374151'
+              color: 'var(--color-text)'
             }}>
               {note.content}
             </div>
@@ -108,8 +108,8 @@ export const RecentNotes: React.FC<RecentNotesProps> = ({ notes }) => {
           style={{
             padding: '8px 16px',
             backgroundColor: 'transparent',
-            color: '#2563eb',
-            border: '1px solid #d1d5db',
+            color: 'var(--color-primary)',
+            border: '1px solid var(--color-border)',
             borderRadius: '6px',
             fontSize: '13px',
             fontWeight: '500',
@@ -117,12 +117,12 @@ export const RecentNotes: React.FC<RecentNotesProps> = ({ notes }) => {
             transition: 'all 0.2s ease'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#eff6ff';
-            e.currentTarget.style.borderColor = '#2563eb';
+            e.currentTarget.style.backgroundColor = 'var(--color-primary-bg)';
+            e.currentTarget.style.borderColor = 'var(--color-primary)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = 'transparent';
-            e.currentTarget.style.borderColor = '#d1d5db';
+            e.currentTarget.style.borderColor = 'var(--color-border)';
           }}
         >
           Alle notities bekijken

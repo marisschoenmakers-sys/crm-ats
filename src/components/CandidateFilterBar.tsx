@@ -11,8 +11,8 @@ export const CandidateFilterBar: React.FC<CandidateFilterBarProps> = ({ onSearch
 
   return (
     <div style={{
-      backgroundColor: 'white',
-      borderBottom: '1px solid #e5e7eb',
+      backgroundColor: 'var(--color-card-bg)',
+      borderBottom: '1px solid var(--color-border)',
       padding: '12px',
       display: 'flex',
       justifyContent: 'space-between',
@@ -28,16 +28,18 @@ export const CandidateFilterBar: React.FC<CandidateFilterBarProps> = ({ onSearch
             width: '280px',
             padding: '8px 16px',
             borderRadius: '20px',
-            border: '1px solid #d1d5db',
+            border: '1px solid var(--color-input-border)',
             fontSize: '14px',
             outline: 'none',
-            transition: 'border-color 0.2s ease'
+            transition: 'border-color 0.2s ease',
+            backgroundColor: 'var(--color-input-bg)',
+            color: 'var(--color-text)'
           }}
           onFocus={(e) => {
-            e.target.style.borderColor = '#2563eb';
+            e.target.style.borderColor = 'var(--color-primary)';
           }}
           onBlur={(e) => {
-            e.target.style.borderColor = '#d1d5db';
+            e.target.style.borderColor = 'var(--color-input-border)';
           }}
         />
       </div>
@@ -49,9 +51,10 @@ export const CandidateFilterBar: React.FC<CandidateFilterBarProps> = ({ onSearch
           style={{
             padding: '8px 12px',
             borderRadius: '6px',
-            border: '1px solid #d1d5db',
+            border: '1px solid var(--color-input-border)',
             fontSize: '14px',
-            backgroundColor: 'white',
+            backgroundColor: 'var(--color-input-bg)',
+            color: 'var(--color-text)',
             cursor: 'pointer',
             outline: 'none'
           }}
@@ -72,9 +75,10 @@ export const CandidateFilterBar: React.FC<CandidateFilterBarProps> = ({ onSearch
           style={{
             padding: '8px 12px',
             borderRadius: '6px',
-            border: '1px solid #d1d5db',
+            border: '1px solid var(--color-input-border)',
             fontSize: '14px',
-            backgroundColor: 'white',
+            backgroundColor: 'var(--color-input-bg)',
+            color: 'var(--color-text)',
             cursor: 'pointer',
             outline: 'none'
           }}
