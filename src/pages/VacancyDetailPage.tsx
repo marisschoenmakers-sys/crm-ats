@@ -1,9 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { VacancyDetailHeader } from '../components/VacancyDetailHeader';
 import { VacancyDetailInfo } from '../components/VacancyDetailInfo';
 import { VacancyPipeline } from '../components/VacancyPipeline';
-import { vacancies } from '../utils/mockVacancies';
+import { VacancyEditModal } from '../components/VacancyEditModal';
+import { getVacancyById } from '../api/vacancies';
+
+interface Vacancy {
+  id: string;
+  title: string;
+  company_name: string;
+  company_id: string | null;
+  location: string | null;
+  employment_type: string;
+  salary_range: string | null;
+  description: string | null;
+  requirements: string[] | null;
+  sector: string | null;
+  priority: 'Laag' | 'Middel' | 'Hoog';
+  status: 'Actief' | 'Gesloten' | 'Concept';
+}
 
 interface VacancyDetailPageProps {
   vacancyId?: string;
@@ -14,12 +30,30 @@ export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId:
   const { id: paramId } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'info' | 'funnel'>('funnel');
+  const [vacancy, setVacancy] = useState<Vacancy | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   // Use prop or URL param
   const vacancyId = propVacancyId || paramId || '';
 
-  // Find the vacancy by ID
-  const vacancy = vacancies.find(v => v.id === vacancyId);
+  // Load vacancy from Supabase
+  useEffect(() => {
+    async function loadVacancy() {
+      if (!vacancyId) {
+        setLoading(false);
+        return;
+      }
+      const { data, error } = await getVacancyById(vacancyId);
+      if (error) {
+        console.error('Error loading vacancy:', error);
+      } else {
+        setVacancy(data as Vacancy);
+      }
+      setLoading(false);
+    }
+    loadVacancy();
+  }, [vacancyId]);
 
   if (!vacancy) {
     return (
@@ -85,7 +119,19 @@ export const VacancyDetailPage: React.FC<VacancyDetailPageProps> = ({ vacancyId:
       </h1>
 
       {/* Vacancy Header */}
-      <VacancyDetailHeader vacancy={vacancy} />
+      <VacancyDetailHeader vacancy={vacancy} onEdit={() => setShowEditModal(true)} />
+
+      {/* Edit Modal */}
+      {showEditModal && (
+        <VacancyEditModal
+          vacancy={vacancy}
+          onClose={() => setShowEditModal(false)}
+          onSave={(updatedVacancy) => {
+            setVacancy(updatedVacancy);
+            setShowEditModal(false);
+          }}
+        />
+      )}
 
       {/* Tab Navigation */}
       <div style={{

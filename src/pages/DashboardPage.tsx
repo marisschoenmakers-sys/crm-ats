@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatCard } from '../components/dashboard/StatCard';
 import { MiniFunnel } from '../components/dashboard/MiniFunnel';
 import { TaskList } from '../components/dashboard/TaskList';
@@ -19,15 +19,88 @@ import {
   PlusIcon,
   BarChartIcon
 } from '../icons/DashboardIcons';
+import { getPendingTasks, updateTask } from '../api/tasks';
+import { getUpcomingEvents } from '../api/calendar';
 import { 
   dashboardStats, 
-  dashboardTasks, 
-  dashboardEvents, 
   dashboardNotes, 
   dashboardActivities 
 } from '../utils/mockDashboard';
+import type { DashboardTask, DashboardEvent } from '../types/dashboard';
 
 export const DashboardPage: React.FC = () => {
+  const [tasks, setTasks] = useState<DashboardTask[]>([]);
+  const [events, setEvents] = useState<DashboardEvent[]>([]);
+
+  // Load tasks and events from Supabase
+  useEffect(() => {
+    async function loadData() {
+      // Load tasks
+      const { data: tasksData } = await getPendingTasks(10);
+      if (tasksData) {
+        const formattedTasks: DashboardTask[] = tasksData.map((t: any) => ({
+          id: t.id,
+          title: t.title,
+          dueDate: t.due_date ? formatDueDate(t.due_date) : 'Geen deadline',
+          completed: t.status === 'completed',
+          priority: t.priority
+        }));
+        setTasks(formattedTasks);
+      }
+
+      // Load events
+      const { data: eventsData } = await getUpcomingEvents(5);
+      if (eventsData) {
+        const formattedEvents: DashboardEvent[] = eventsData.map((e: any) => ({
+          id: e.id,
+          title: e.title,
+          date: formatEventDate(e.start_time),
+          time: formatEventTime(e.start_time),
+          type: e.event_type || 'other',
+          location: e.location || ''
+        }));
+        setEvents(formattedEvents);
+      }
+    }
+    loadData();
+  }, []);
+
+  // Helper to format due date
+  const formatDueDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    if (date.toDateString() === today.toDateString()) return 'Vandaag';
+    if (date.toDateString() === tomorrow.toDateString()) return 'Morgen';
+    return date.toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' });
+  };
+
+  // Helper to format event date
+  const formatEventDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    if (date.toDateString() === today.toDateString()) return 'Vandaag';
+    if (date.toDateString() === tomorrow.toDateString()) return 'Morgen';
+    return date.toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' });
+  };
+
+  // Helper to format event time
+  const formatEventTime = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+  };
+
+  // Handle task completion toggle
+  const handleTaskToggle = async (taskId: string, completed: boolean) => {
+    await updateTask(taskId, { status: completed ? 'completed' : 'todo' });
+    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, completed } : t));
+  };
+
   // Get current date for welcome message
   const getCurrentDate = () => {
     const options: Intl.DateTimeFormatOptions = { 
@@ -248,7 +321,7 @@ export const DashboardPage: React.FC = () => {
               <CheckSquareIcon style={iconStyle} />
               Taken
             </h2>
-            <TaskList tasks={dashboardTasks} />
+            <TaskList tasks={tasks} />
           </div>
 
           {/* Agenda */}
@@ -265,7 +338,7 @@ export const DashboardPage: React.FC = () => {
               <ListIcon style={iconStyle} />
               Agenda
             </h2>
-            <AgendaList events={dashboardEvents} />
+            <AgendaList events={events} />
           </div>
         </div>
       </div>

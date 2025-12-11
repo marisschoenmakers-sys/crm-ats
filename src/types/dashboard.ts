@@ -31,5 +31,6 @@ export interface DashboardActivity {
   id: string;
   description: string;
   timestamp: string;
-  type: "candidate" | "vacancy" | "note" | "file";
+  type: "candidate" | "vacancy" | "note" | "file" | "task" | "email" | "event" | "company" | "other";
+  user?: string;
 }

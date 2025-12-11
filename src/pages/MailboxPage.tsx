@@ -1,86 +1,96 @@
-import React, { useState } from 'react';
-import type { Email } from '../types';
+import React, { useState, useEffect } from 'react';
+import { getEmails, updateEmail, toggleStar as apiToggleStar } from '../api/emails';
 
-const mockEmails: Email[] = [
-  {
-    id: 1,
-    sender: 'Jan Jansen',
-    senderEmail: 'jan.jansen@email.com',
-    subject: 'Sollicitatie Senior Frontend Developer',
-    preview: 'Geachte heer/mevrouw, Graag solliciteer ik naar de functie van Senior Frontend Developer...',
-    time: '10:30',
-    isRead: false,
-    isStarred: true,
-    category: 'inbox'
-  },
-  {
-    id: 2,
-    sender: 'Maria de Vries',
-    senderEmail: 'maria.devries@email.com',
-    subject: 'Vraag over vacature Marketing Manager',
-    preview: 'Beste team, Ik heb een vraag over de vacature voor Marketing Manager...',
-    time: '09:15',
-    isRead: true,
-    isStarred: false,
-    category: 'inbox'
-  },
-  {
-    id: 3,
-    sender: 'Pieter Bakker',
-    senderEmail: 'pieter.bakker@email.com',
-    subject: 'Beschikbaarheid voor gesprek',
-    preview: 'Goedemorgen, Ik wil graag mijn beschikbaarheid doorgeven voor een gesprek...',
-    time: 'Gisteren',
-    isRead: true,
-    isStarred: false,
-    category: 'inbox'
-  },
-  {
-    id: 4,
-    sender: 'Lisa Visser',
-    senderEmail: 'lisa.visser@email.com',
-    subject: 'Bedankt voor het gesprek',
-    preview: 'Beste recruiter, Hartelijk dank voor het gesprek van vanochtend...',
-    time: 'Gisteren',
-    isRead: false,
-    isStarred: true,
-    category: 'inbox'
-  },
-  {
-    id: 5,
-    sender: 'Mark van Dijk',
-    senderEmail: 'mark.vandijk@email.com',
-    subject: 'CV bijgevoegd',
-    preview: 'Geachte heer/mevrouw, In de bijlage vindt u mijn CV voor de positie van HR Business Partner...',
-    time: '2 dagen geleden',
-    isRead: true,
-    isStarred: false,
-    category: 'inbox'
-  }
-];
+interface EmailItem {
+  id: string;
+  sender: string;
+  senderEmail: string;
+  subject: string;
+  preview: string;
+  time: string;
+  isRead: boolean;
+  isStarred: boolean;
+  category: string;
+}
 
 const categories = [
-  { id: 'inbox', name: 'Inbox', count: 5, icon: '📥' },
-  { id: 'sent', name: 'Verzonden', count: 3, icon: '📤' },
-  { id: 'draft', name: 'Concepten', count: 2, icon: '📝' },
-  { id: 'spam', name: 'Spam', count: 1, icon: '🚫' },
+  { id: 'inbox', name: 'Inbox', count: 0, icon: '📥' },
+  { id: 'sent', name: 'Verzonden', count: 0, icon: '📤' },
+  { id: 'drafts', name: 'Concepten', count: 0, icon: '📝' },
+  { id: 'trash', name: 'Prullenbak', count: 0, icon: '🗑️' },
 ];
 
 export const MailboxPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('inbox');
-  const [emails, setEmails] = useState(mockEmails);
+  const [emails, setEmails] = useState<EmailItem[]>([]);
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
+
+  // Load emails from Supabase
+  useEffect(() => {
+    async function loadEmails() {
+      const { data, error } = await getEmails();
+      if (error) {
+        console.error('Error loading emails:', error);
+        return;
+      }
+      if (data) {
+        const formattedEmails: EmailItem[] = data.map((e: any) => ({
+          id: e.id,
+          sender: e.from_name,
+          senderEmail: e.from_email,
+          subject: e.subject,
+          preview: e.body?.substring(0, 100) + '...' || '',
+          time: formatEmailTime(e.received_at),
+          isRead: e.is_read,
+          isStarred: e.is_starred,
+          category: e.folder
+        }));
+        setEmails(formattedEmails);
+        
+        // Calculate counts per category
+        const counts: Record<string, number> = {};
+        formattedEmails.forEach(e => {
+          counts[e.category] = (counts[e.category] || 0) + 1;
+        });
+        setCategoryCounts(counts);
+      }
+    }
+    loadEmails();
+  }, []);
+
+  const formatEmailTime = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) {
+      return date.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+    } else if (diffDays === 1) {
+      return 'Gisteren';
+    } else if (diffDays < 7) {
+      return `${diffDays} dagen geleden`;
+    } else {
+      return date.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+    }
+  };
 
   const filteredEmails = emails.filter(email => email.category === selectedCategory);
 
-  const toggleStar = (emailId: number) => {
-    setEmails(emails.map(email => 
-      email.id === emailId ? { ...email, isStarred: !email.isStarred } : email
+  const toggleStar = async (emailId: string) => {
+    const email = emails.find(e => e.id === emailId);
+    if (!email) return;
+    
+    await apiToggleStar(emailId, !email.isStarred);
+    setEmails(emails.map(e => 
+      e.id === emailId ? { ...e, isStarred: !e.isStarred } : e
     ));
   };
 
-  const markAsRead = (emailId: number) => {
-    setEmails(emails.map(email => 
-      email.id === emailId ? { ...email, isRead: true } : email
+  const markAsRead = async (emailId: string) => {
+    await updateEmail(emailId, { is_read: true });
+    setEmails(emails.map(e => 
+      e.id === emailId ? { ...e, isRead: true } : e
     ));
   };
 
@@ -133,7 +143,7 @@ export const MailboxPage: React.FC = () => {
                 borderRadius: '12px',
                 color: 'var(--color-text)'
               }}>
-                {category.count}
+                {categoryCounts[category.id] || 0}
               </span>
             </button>
           ))}

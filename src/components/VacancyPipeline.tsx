@@ -1,46 +1,56 @@
 import React, { useState } from 'react';
 import { vacancyCandidatesByVacancyId } from '../utils/mockVacancies';
+import { FunnelEditorModal } from './FunnelEditorModal';
 import type { VacancyCandidate } from '../types/vacancy';
 
-// Stage type for all 10 stages
-type StageType = 'Gesolliciteerd' | 'Geen gehoor' | 'Telefonisch interview' | 'In afwachting van CV' | 'Twijfel kandidaat' | 'Nog afwijzen' | 'Voorgesteld' | 'Afspraak op locatie' | 'Aanbod' | 'Aangenomen';
+interface FunnelStage {
+  id: string;
+  name: string;
+  color: string;
+}
+
+// Default stages
+const defaultStages: FunnelStage[] = [
+  { id: 'stage-1', name: 'Gesolliciteerd', color: '#6B7280' },
+  { id: 'stage-2', name: 'Geen gehoor', color: '#3B82F6' },
+  { id: 'stage-3', name: 'Telefonisch interview', color: '#8B5CF6' },
+  { id: 'stage-4', name: 'In afwachting van CV', color: '#F59E0B' },
+  { id: 'stage-5', name: 'Twijfel kandidaat', color: '#EC4899' },
+  { id: 'stage-6', name: 'Nog afwijzen', color: '#EF4444' },
+  { id: 'stage-7', name: 'Voorgesteld', color: '#10B981' },
+  { id: 'stage-8', name: 'Afspraak op locatie', color: '#06B6D4' },
+  { id: 'stage-9', name: 'Aanbod', color: '#059669' },
+  { id: 'stage-10', name: 'Aangenomen', color: '#22C55E' },
+];
 
 interface VacancyPipelineProps {
   vacancyId: string;
 }
 
 export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) => {
-  // Get candidates for this vacancy and make them stateful
   const initialCandidates = vacancyCandidatesByVacancyId[vacancyId] || [];
   const [candidates, setCandidates] = useState<VacancyCandidate[]>(initialCandidates);
   const [draggedCandidate, setDraggedCandidate] = useState<VacancyCandidate | null>(null);
   const [dragOverStage, setDragOverStage] = useState<string | null>(null);
-  
-  // Define stages (recruitment funnel from left to right)
-  const stages: StageType[] = [
-    'Gesolliciteerd',
-    'Geen gehoor',
-    'Telefonisch interview',
-    'In afwachting van CV',
-    'Twijfel kandidaat',
-    'Nog afwijzen',
-    'Voorgesteld',
-    'Afspraak op locatie',
-    'Aanbod',
-    'Aangenomen'
-  ];
+  const [stages, setStages] = useState<FunnelStage[]>(defaultStages);
+  const [showFunnelEditor, setShowFunnelEditor] = useState(false);
 
-  // Group candidates by stage
+  // Group candidates by stage name
   const candidatesByStage = stages.reduce((acc, stage) => {
-    acc[stage] = candidates.filter(candidate => candidate.stage === stage);
+    acc[stage.name] = candidates.filter(candidate => candidate.stage === stage.name);
     return acc;
   }, {} as Record<string, VacancyCandidate[]>);
 
   // Handle moving a candidate to a new stage
-  const moveCandidate = (candidateId: string, newStage: StageType) => {
+  const moveCandidate = (candidateId: string, newStageName: string) => {
     setCandidates(prev => prev.map(c => 
-      c.id === candidateId ? { ...c, stage: newStage } : c
+      c.id === candidateId ? { ...c, stage: newStageName as any } : c
     ));
+  };
+
+  const handleSaveFunnelStages = (newStages: FunnelStage[]) => {
+    setStages(newStages);
+    setShowFunnelEditor(false);
   };
 
   return (
@@ -69,14 +79,44 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
           Vacature Funnel
         </h2>
         
-        {/* Summary */}
-        <div style={{
-          fontSize: '14px',
-          color: 'var(--color-text-muted)'
-        }}>
-          <span style={{ fontWeight: '500' }}>{candidates.length}</span> kandidaten
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Edit Funnel Button */}
+          <button
+            onClick={() => setShowFunnelEditor(true)}
+            style={{
+              padding: '8px 12px',
+              backgroundColor: 'var(--color-bg-secondary)',
+              color: 'var(--color-text)',
+              border: '1px solid var(--color-border)',
+              borderRadius: '6px',
+              fontSize: '13px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            ⚙️ Funnel bewerken
+          </button>
+          
+          {/* Summary */}
+          <div style={{
+            fontSize: '14px',
+            color: 'var(--color-text-muted)'
+          }}>
+            <span style={{ fontWeight: '500' }}>{candidates.length}</span> kandidaten
+          </div>
         </div>
       </div>
+
+      {/* Funnel Editor Modal */}
+      {showFunnelEditor && (
+        <FunnelEditorModal
+          stages={stages}
+          onClose={() => setShowFunnelEditor(false)}
+          onSave={handleSaveFunnelStages}
+        />
+      )}
 
       {/* Pipeline Container */}
       <div style={{
@@ -88,20 +128,20 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
         width: '100%'
       }}>
         {stages.map((stage) => {
-          const stageCandidates = candidatesByStage[stage] || [];
+          const stageCandidates = candidatesByStage[stage.name] || [];
           
           return (
             <div
-              key={stage}
+              key={stage.id}
               onDragOver={(e) => {
                 e.preventDefault();
-                setDragOverStage(stage);
+                setDragOverStage(stage.id);
               }}
               onDragLeave={() => setDragOverStage(null)}
               onDrop={(e) => {
                 e.preventDefault();
                 if (draggedCandidate) {
-                  moveCandidate(draggedCandidate.id, stage);
+                  moveCandidate(draggedCandidate.id, stage.name);
                   setDraggedCandidate(null);
                 }
                 setDragOverStage(null);
@@ -110,14 +150,14 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
                 minWidth: '300px',
                 maxWidth: '350px',
                 width: '300px',
-                backgroundColor: dragOverStage === stage ? 'var(--color-primary-bg)' : 'var(--color-bg-secondary)',
+                backgroundColor: dragOverStage === stage.id ? 'var(--color-primary-bg)' : 'var(--color-bg-secondary)',
                 borderRadius: '8px',
                 padding: '16px',
                 flexShrink: 0,
                 display: 'flex',
                 flexDirection: 'column',
                 boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-                border: dragOverStage === stage ? '2px dashed var(--color-primary)' : '2px solid transparent',
+                border: dragOverStage === stage.id ? '2px dashed var(--color-primary)' : '2px solid transparent',
                 transition: 'background-color 0.2s, border-color 0.2s'
               }}
             >
@@ -128,7 +168,7 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
                 alignItems: 'center',
                 marginBottom: '12px',
                 paddingBottom: '8px',
-                borderBottom: '1px solid var(--color-border)'
+                borderBottom: `2px solid ${stage.color}`
               }}>
                 <h3 style={{
                   fontSize: '14px',
@@ -136,13 +176,13 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
                   color: 'var(--color-text)',
                   margin: 0
                 }}>
-                  {stage}
+                  {stage.name}
                 </h3>
                 
                 {/* Candidate Count Badge */}
                 <span style={{
-                  backgroundColor: 'var(--color-border)',
-                  color: 'var(--color-text)',
+                  backgroundColor: stage.color,
+                  color: 'white',
                   fontSize: '12px',
                   fontWeight: '500',
                   padding: '2px 8px',
@@ -211,8 +251,8 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
           color: 'var(--color-text-muted)'
         }}>
           <span>Totaal kandidaten: <strong style={{ color: 'var(--color-text)' }}>{candidates.length}</strong></span>
-          <span>Actieve stages: <strong style={{ color: 'var(--color-text)' }}>{stages.filter(stage => candidatesByStage[stage].length > 0).length}</strong></span>
-          <span>Gemiddeld per stage: <strong style={{ color: 'var(--color-text)' }}>{Math.round(candidates.length / stages.length)}</strong></span>
+          <span>Actieve stages: <strong style={{ color: 'var(--color-text)' }}>{stages.filter(stage => (candidatesByStage[stage.name] || []).length > 0).length}</strong></span>
+          <span>Gemiddeld per stage: <strong style={{ color: 'var(--color-text)' }}>{stages.length > 0 ? Math.round(candidates.length / stages.length) : 0}</strong></span>
         </div>
       </div>
     </div>
@@ -222,8 +262,8 @@ export const VacancyPipeline: React.FC<VacancyPipelineProps> = ({ vacancyId }) =
 // Candidate card with drag-and-drop and move menu
 interface VacancyCandidateCardProps {
   candidate: VacancyCandidate;
-  stages: StageType[];
-  onMoveCandidate: (candidateId: string, newStage: StageType) => void;
+  stages: FunnelStage[];
+  onMoveCandidate: (candidateId: string, newStageName: string) => void;
   onDragStart: () => void;
   onDragEnd: () => void;
 }
@@ -319,38 +359,39 @@ const VacancyCandidateCard: React.FC<VacancyCandidateCardProps> = ({
           </div>
           {stages.map((stage) => (
             <button
-              key={stage}
+              key={stage.id}
               onClick={(e) => {
                 e.stopPropagation();
-                onMoveCandidate(candidate.id, stage);
+                onMoveCandidate(candidate.id, stage.name);
                 setShowMoveMenu(false);
               }}
-              disabled={stage === candidate.stage}
+              disabled={stage.name === candidate.stage}
               style={{
                 display: 'block',
                 width: '100%',
                 padding: '10px 12px',
-                backgroundColor: stage === candidate.stage ? 'var(--color-primary-bg)' : 'transparent',
+                backgroundColor: stage.name === candidate.stage ? 'var(--color-primary-bg)' : 'transparent',
                 border: 'none',
                 textAlign: 'left',
-                cursor: stage === candidate.stage ? 'default' : 'pointer',
+                cursor: stage.name === candidate.stage ? 'default' : 'pointer',
                 fontSize: '13px',
-                color: stage === candidate.stage ? 'var(--color-primary)' : 'var(--color-text)',
-                fontWeight: stage === candidate.stage ? '600' : 'normal',
+                color: stage.name === candidate.stage ? 'var(--color-primary)' : 'var(--color-text)',
+                fontWeight: stage.name === candidate.stage ? '600' : 'normal',
                 borderBottom: '1px solid var(--color-border)'
               }}
               onMouseEnter={(e) => {
-                if (stage !== candidate.stage) {
+                if (stage.name !== candidate.stage) {
                   e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
                 }
               }}
               onMouseLeave={(e) => {
-                if (stage !== candidate.stage) {
+                if (stage.name !== candidate.stage) {
                   e.currentTarget.style.backgroundColor = 'transparent';
                 }
               }}
             >
-              {stage === candidate.stage ? `✓ ${stage}` : stage}
+              <span style={{ display: 'inline-block', width: '12px', height: '12px', borderRadius: '50%', backgroundColor: stage.color, marginRight: '8px', verticalAlign: 'middle' }}></span>
+              {stage.name === candidate.stage ? `✓ ${stage.name}` : stage.name}
             </button>
           ))}
         </div>

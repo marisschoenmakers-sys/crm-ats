@@ -1,5 +1,18 @@
 import React from 'react';
-import type { Vacancy } from '../types/vacancy';
+
+interface Vacancy {
+  id: string;
+  title: string;
+  company_name: string;
+  location: string | null;
+  employment_type: string;
+  salary_range: string | null;
+  description: string | null;
+  requirements: string[] | null;
+  sector: string | null;
+  priority: 'Laag' | 'Middel' | 'Hoog';
+  status: 'Actief' | 'Gesloten' | 'Concept';
+}
 
 interface VacancyDetailInfoProps {
   vacancy: Vacancy;
@@ -40,7 +53,7 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
               fontSize: '14px',
               color: 'var(--color-text)'
             }}>
-              {vacancy.company}
+              {vacancy.company_name}
             </div>
           </div>
 
@@ -74,11 +87,11 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
               fontSize: '14px',
               color: 'var(--color-text)'
             }}>
-              {vacancy.employmentType}
+              {vacancy.employment_type}
             </div>
           </div>
 
-          {vacancy.salaryRange && (
+          {vacancy.salary_range && (
             <div>
               <div style={{
                 fontSize: '12px',
@@ -92,7 +105,7 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
                 fontSize: '14px',
                 color: 'var(--color-text)'
               }}>
-                {vacancy.salaryRange}
+                {vacancy.salary_range}
               </div>
             </div>
           )}
@@ -158,7 +171,7 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
             lineHeight: '1.6',
             color: 'var(--color-text)'
           }}>
-            {vacancy.description.split('\n').map((paragraph, index) => (
+            {(vacancy.description || '').split('\n').map((paragraph, index) => (
               <p key={index} style={{ margin: '0 0 12px 0' }}>
                 {paragraph}
               </p>
@@ -183,7 +196,7 @@ export const VacancyDetailInfo: React.FC<VacancyDetailInfoProps> = ({ vacancy })
             lineHeight: '1.6',
             color: 'var(--color-text)'
           }}>
-            {vacancy.requirements.map((requirement, index) => (
+            {(vacancy.requirements || []).map((requirement, index) => (
               <li key={index} style={{ marginBottom: '8px' }}>
                 {requirement}
               </li>

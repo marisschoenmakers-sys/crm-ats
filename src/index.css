@@ -200,10 +200,16 @@ button:focus-visible {
   left: 0;
   top: 0;
   height: 100vh;
-  width: 220px;
+  width: 180px;
   background-color: var(--color-sidebar-bg);
   color: var(--color-sidebar-text);
   z-index: 50;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar.closed {
+  width: 64px;
 }
 
 .sidebar-item {
@@ -251,10 +257,10 @@ button:focus-visible {
 
 .main-content {
   flex: 1;
-  margin-left: 220px;
   min-height: calc(100vh - 56px);
   background-color: var(--color-bg-secondary);
   overflow-x: hidden;
+  transition: margin-left 0.3s ease;
 }
 
 .page-container {

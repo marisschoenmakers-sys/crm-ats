@@ -1,11 +1,24 @@
 import React from 'react';
-import type { Vacancy } from '../types/vacancy';
+
+interface Vacancy {
+  id: string;
+  title: string;
+  company_name: string;
+  location: string | null;
+  employment_type: string;
+  salary_range: string | null;
+  sector: string | null;
+  priority: 'Laag' | 'Middel' | 'Hoog';
+  status: 'Actief' | 'Gesloten' | 'Concept';
+  created_at?: string;
+}
 
 interface VacancyDetailHeaderProps {
   vacancy: Vacancy;
+  onEdit?: () => void;
 }
 
-export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacancy }) => {
+export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacancy, onEdit }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Actief': return 'var(--color-success-bg)';
@@ -59,7 +72,7 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
             alignItems: 'center',
             gap: '8px'
           }}>
-            <span>{vacancy.company}</span>
+            <span>{vacancy.company_name}</span>
             <span style={{ color: 'var(--color-text-muted)' }}>•</span>
             <span>{vacancy.location}</span>
           </div>
@@ -87,6 +100,7 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
           flexShrink: 0
         }}>
           <button
+            onClick={onEdit}
             style={{
               padding: '8px 16px',
               backgroundColor: 'var(--color-card-bg)',
@@ -142,11 +156,11 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
         paddingTop: '12px'
       }}>
         <div>
-          <span style={{ fontWeight: '500' }}>Type:</span> {vacancy.employmentType}
+          <span style={{ fontWeight: '500' }}>Type:</span> {vacancy.employment_type}
         </div>
-        {vacancy.salaryRange && (
+        {vacancy.salary_range && (
           <div>
-            <span style={{ fontWeight: '500' }}>Salaris:</span> {vacancy.salaryRange}
+            <span style={{ fontWeight: '500' }}>Salaris:</span> {vacancy.salary_range}
           </div>
         )}
         {vacancy.sector && (
@@ -155,7 +169,7 @@ export const VacancyDetailHeader: React.FC<VacancyDetailHeaderProps> = ({ vacanc
           </div>
         )}
         <div>
-          <span style={{ fontWeight: '500' }}>Geplaatst:</span> {vacancy.createdAt}
+          <span style={{ fontWeight: '500' }}>Geplaatst:</span> {vacancy.created_at ? new Date(vacancy.created_at).toLocaleDateString('nl-NL') : '-'}
         </div>
       </div>
     </div>

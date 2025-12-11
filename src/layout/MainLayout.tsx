@@ -40,18 +40,22 @@ const getPathFromPage = (page: CRMPage): string => {
 };
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarHovered, setIsSidebarHovered] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = getActivePageFromPath(location.pathname);
 
+  // Sidebar is open when hovered
+  const isSidebarOpen = isSidebarHovered;
+  // Sidebar is collapsed (icons only) when not hovered
+  const isSidebarCollapsed = !isSidebarHovered;
+
   const handleSidebarItemClick = (page: CRMPage) => {
     navigate(getPathFromPage(page));
-    setIsMobileMenuOpen(false); // Close mobile menu after navigation
   };
 
-  const handleMobileMenuToggle = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  const handleSidebarHover = (isHovered: boolean) => {
+    setIsSidebarHovered(isHovered);
   };
 
   const handleSearch = (query: string) => {
@@ -70,27 +74,30 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       color: 'var(--color-text)',
       display: 'flex'
     }}>
-      {/* Mobile Overlay */}
-      <div 
-        className={`mobile-overlay ${isMobileMenuOpen ? 'open' : ''}`}
-        onClick={handleMobileMenuToggle}
-      />
+      {/* Overlay when sidebar is open on mobile */}
+      {isSidebarHovered && (
+        <div 
+          className="mobile-overlay open"
+          onClick={() => setIsSidebarHovered(false)}
+        />
+      )}
 
       {/* Sidebar */}
       <Sidebar 
         activePage={activePage}
         onChangePage={handleSidebarItemClick}
-        className={isMobileMenuOpen ? 'open' : ''}
+        className={isSidebarOpen ? 'open' : 'closed'}
+        isCollapsed={isSidebarCollapsed}
+        onHoverChange={handleSidebarHover}
       />
 
       {/* Main Content Area */}
-      <div className="main-content">
+      <div className="main-content" style={{ marginLeft: isSidebarHovered ? '180px' : '64px', transition: 'margin-left 0.3s ease' }}>
         {/* Topbar */}
         <Topbar
           onSearch={handleSearch}
           onNotificationClick={handleNotificationClick}
           userName="Maris"
-          onMobileMenuToggle={handleMobileMenuToggle}
         />
 
         {/* Page Content */}

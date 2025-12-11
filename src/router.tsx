@@ -14,6 +14,7 @@ import { AnalyticsPage } from './pages/AnalyticsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { SkeletonPage } from './pages/skeletons/SkeletonPage';
 import DebugSupabase from './components/DebugSupabase';
+import { AdminSeedPage } from './pages/AdminSeedPage';
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,9 @@ export const router = createBrowserRouter([
       
       // Debug
       { path: 'debug/supabase', element: <DebugSupabase /> },
+      
+      // Admin
+      { path: 'admin/seed', element: <AdminSeedPage /> },
       
       // Settings - main and all subroutes
       { path: 'settings', element: <SettingsPage /> },

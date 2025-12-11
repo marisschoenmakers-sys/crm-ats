@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CandidateDetailHeader } from '../components/CandidateDetailHeader';
 import { DetailTabs } from '../components/DetailTabs';
@@ -8,6 +8,7 @@ import { CandidateActivity } from '../components/CandidateActivity';
 import { CandidateEvaluationsList } from '../components/CandidateEvaluationsList';
 import { EvaluationFormFiller, type FilledEvaluation } from '../components/EvaluationFormFiller';
 import { NotesSidebar } from '../components/NotesSidebar';
+import { getTemplates } from '../api/evaluations';
 import type { EvaluationTemplate } from '../types/evaluationBuilder';
 import type { CandidateNote } from '../types/candidate';
 import { 
@@ -20,67 +21,6 @@ import {
 interface CandidateDetailPageProps {
   onChangePage?: (page: 'candidates') => void;
 }
-
-// Mock evaluation templates (in real app, these would come from settings/API)
-const mockEvaluationTemplates: EvaluationTemplate[] = [
-  {
-    id: '1',
-    name: 'Sales Interview Evaluatie',
-    description: 'Standaard evaluatieformulier voor sales kandidaten',
-    category: 'Sales',
-    questions: [
-      { id: 'q1', type: 'scorecard', label: 'Communicatievaardigheden', description: 'Hoe goed kan de kandidaat communiceren?', maxScore: 5 },
-      { id: 'q2', type: 'scorecard', label: 'Presentatievaardigheden', maxScore: 5 },
-      { id: 'q3', type: 'text', label: 'Sterke punten', description: 'Beschrijf de sterke punten van de kandidaat' },
-      { id: 'q4', type: 'text', label: 'Verbeterpunten' },
-      { id: 'q5', type: 'yes_no', label: 'Geschikt voor de functie?' }
-    ],
-    includeFinalScore: true,
-    createdAt: '2024-01-15T10:00:00Z',
-    updatedAt: '2024-01-15T10:00:00Z'
-  },
-  {
-    id: '2',
-    name: 'Technisch Interview',
-    description: 'Evaluatieformulier voor technische functies',
-    category: 'Technisch',
-    questions: [
-      { id: 'q1', type: 'scorecard', label: 'Technische kennis', maxScore: 5 },
-      { id: 'q2', type: 'scorecard', label: 'Probleemoplossend vermogen', maxScore: 5 },
-      { id: 'q3', type: 'multiple_choice', label: 'Bekende programmeertalen', options: [
-        { id: 'o1', label: 'JavaScript' },
-        { id: 'o2', label: 'Python' },
-        { id: 'o3', label: 'Java' },
-        { id: 'o4', label: 'C#' },
-        { id: 'o5', label: 'TypeScript' }
-      ]},
-      { id: 'q4', type: 'text', label: 'Technische opmerkingen' }
-    ],
-    includeFinalScore: true,
-    createdAt: '2024-01-20T14:00:00Z',
-    updatedAt: '2024-01-20T14:00:00Z'
-  },
-  {
-    id: '3',
-    name: 'HR Screening',
-    description: 'Eerste screening door HR',
-    category: 'HR',
-    questions: [
-      { id: 'q1', type: 'yes_no', label: 'CV komt overeen met profiel?' },
-      { id: 'q2', type: 'single_choice', label: 'Beschikbaarheid', options: [
-        { id: 'o1', label: 'Direct beschikbaar' },
-        { id: 'o2', label: 'Binnen 1 maand' },
-        { id: 'o3', label: 'Binnen 3 maanden' },
-        { id: 'o4', label: 'Langer dan 3 maanden' }
-      ]},
-      { id: 'q3', type: 'text', label: 'Salarisverwachting' },
-      { id: 'q4', type: 'text', label: 'Algemene indruk' }
-    ],
-    includeFinalScore: true,
-    createdAt: '2024-01-25T09:00:00Z',
-    updatedAt: '2024-01-25T09:00:00Z'
-  }
-];
 
 // ID generator for new notes
 let noteIdCounter = 100;
@@ -95,6 +35,31 @@ export const CandidateDetailPage: React.FC<CandidateDetailPageProps> = ({ onChan
   const [showEvaluationForm, setShowEvaluationForm] = useState(false);
   const [filledEvaluations, setFilledEvaluations] = useState<FilledEvaluation[]>([]);
   const [notes, setNotes] = useState<CandidateNote[]>(initialNotes);
+  const [evaluationTemplates, setEvaluationTemplates] = useState<EvaluationTemplate[]>([]);
+
+  // Load evaluation templates from Supabase
+  useEffect(() => {
+    async function loadTemplates() {
+      const { data, error } = await getTemplates();
+      if (error) {
+        console.error('Error loading evaluation templates:', error);
+      } else if (data) {
+        // Transform Supabase data to match EvaluationTemplate type
+        const templates: EvaluationTemplate[] = data.map((t: any) => ({
+          id: t.id,
+          name: t.name,
+          description: t.description || '',
+          category: t.category || 'Algemeen',
+          questions: [], // Templates from DB don't have questions yet - they're in sections
+          includeFinalScore: true,
+          createdAt: t.created_at,
+          updatedAt: t.updated_at || t.created_at
+        }));
+        setEvaluationTemplates(templates);
+      }
+    }
+    loadTemplates();
+  }, []);
 
   const handleSaveEvaluation = (evaluation: FilledEvaluation) => {
     setFilledEvaluations(prev => [...prev, evaluation]);
@@ -116,7 +81,7 @@ export const CandidateDetailPage: React.FC<CandidateDetailPageProps> = ({ onChan
     if (showEvaluationForm && activeTab === 'Evaluaties') {
       return (
         <EvaluationFormFiller
-          templates={mockEvaluationTemplates}
+          templates={evaluationTemplates}
           candidateId={candidateDetail.id}
           candidateName={candidateDetail.fullName}
           onSave={handleSaveEvaluation}

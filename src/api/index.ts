@@ -4,3 +4,4 @@ export * from './vacancies';
 export * from './companies';
 export * from './evaluations';
 export * from './pipeline';
+export * from './search';

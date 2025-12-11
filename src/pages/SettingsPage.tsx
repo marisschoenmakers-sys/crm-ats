@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   SettingsLayout, 
@@ -7,6 +7,7 @@ import {
   type SettingsSection 
 } from '../layouts/SettingsLayout';
 import { EvaluationTemplateBuilder } from '../components/EvaluationTemplateBuilder';
+import { getTemplates } from '../api/evaluations';
 import type { EvaluationTemplate } from '../types/evaluationBuilder';
 
 interface SettingsPageProps {
@@ -15,44 +16,34 @@ interface SettingsPageProps {
   isNewTemplate?: boolean;
 }
 
-// Mock saved templates
-const mockTemplates: EvaluationTemplate[] = [
-  {
-    id: '1',
-    name: 'Sales Interview Evaluatie',
-    description: 'Standaard evaluatieformulier voor sales kandidaten',
-    category: 'Sales',
-    questions: [
-      { id: 'q1', type: 'scorecard', label: 'Presentatievaardigheden', maxScore: 5 },
-      { id: 'q2', type: 'text', label: 'Opmerkingen over communicatie' }
-    ],
-    includeFinalScore: true,
-    createdAt: '2024-01-15T10:00:00Z',
-    updatedAt: '2024-01-15T10:00:00Z'
-  },
-  {
-    id: '2',
-    name: 'Technisch Interview',
-    description: 'Evaluatieformulier voor technische functies',
-    category: 'Technisch',
-    questions: [
-      { id: 'q1', type: 'scorecard', label: 'Programmeerkennis', maxScore: 5 },
-      { id: 'q2', type: 'multiple_choice', label: 'Bekende programmeertalen', options: [
-        { id: 'o1', label: 'JavaScript' },
-        { id: 'o2', label: 'Python' },
-        { id: 'o3', label: 'Java' },
-        { id: 'o4', label: 'C#' }
-      ]}
-    ],
-    includeFinalScore: true,
-    createdAt: '2024-01-20T14:00:00Z',
-    updatedAt: '2024-01-20T14:00:00Z'
-  }
-];
-
 // Evaluation Forms Section Component
 const EvaluationFormsSection: React.FC = () => {
-  const [templates, setTemplates] = useState<EvaluationTemplate[]>(mockTemplates);
+  const [templates, setTemplates] = useState<EvaluationTemplate[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load templates from Supabase
+  useEffect(() => {
+    async function loadTemplates() {
+      const { data, error } = await getTemplates();
+      if (error) {
+        console.error('Error loading evaluation templates:', error);
+      } else if (data) {
+        const loadedTemplates: EvaluationTemplate[] = data.map((t: any) => ({
+          id: t.id,
+          name: t.name,
+          description: t.description || '',
+          category: t.category || 'Algemeen',
+          questions: [],
+          includeFinalScore: true,
+          createdAt: t.created_at,
+          updatedAt: t.updated_at || t.created_at
+        }));
+        setTemplates(loadedTemplates);
+      }
+      setLoading(false);
+    }
+    loadTemplates();
+  }, []);
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState<EvaluationTemplate | undefined>(undefined);
 
@@ -333,7 +324,7 @@ const ProfileSection: React.FC = () => (
 // Main Settings Page Component
 export const SettingsPage: React.FC<SettingsPageProps> = ({ onBackToDashboard, initialSection }) => {
   const navigate = useNavigate();
-  const [activeSection, setActiveSection] = useState<SettingsSection>(initialSection || 'evaluation-forms');
+  const [activeSection, setActiveSection] = useState<SettingsSection>(initialSection || 'profile');
   
   const handleBackToDashboard = () => {
     if (onBackToDashboard) {

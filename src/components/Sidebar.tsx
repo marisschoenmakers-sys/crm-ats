@@ -6,8 +6,7 @@ import {
   CandidateIcon,
   TalentPoolIcon,
   MailIcon,
-  AnalyticsIcon,
-  SettingsIcon
+  AnalyticsIcon
 } from '../icons';
 import type { CRMPage } from '../types';
 
@@ -15,6 +14,8 @@ interface SidebarProps {
   activePage?: CRMPage;
   onChangePage?: (page: CRMPage) => void;
   className?: string;
+  isCollapsed?: boolean;
+  onHoverChange?: (isHovered: boolean) => void;
 }
 
 const sidebarItems = [
@@ -52,34 +53,54 @@ const sidebarItems = [
     id: 'analytics' as CRMPage,
     label: 'Analytics',
     icon: AnalyticsIcon,
-  },
-  {
-    id: 'settings' as CRMPage,
-    label: 'Instellingen',
-    icon: SettingsIcon,
   }
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ 
   activePage = 'dashboard',
   onChangePage,
-  className
+  className,
+  isCollapsed = false,
+  onHoverChange
 }) => {
   const handleItemClick = (page: CRMPage) => {
     onChangePage?.(page);
   };
 
+  const showLabels = !isCollapsed;
+
   return (
-    <div className={`sidebar ${className || ''}`} style={{ backgroundColor: 'var(--color-sidebar-bg)' }}>
+    <div 
+      className={`sidebar ${className || ''}`} 
+      style={{ 
+        backgroundColor: 'var(--color-sidebar-bg)',
+        width: isCollapsed ? '64px' : '180px',
+        transition: 'width 0.3s ease'
+      }}
+      onMouseEnter={() => onHoverChange?.(true)}
+      onMouseLeave={() => onHoverChange?.(false)}
+    >
       {/* Header */}
-      <div style={{ padding: '16px', borderBottom: '1px solid var(--color-sidebar-border)' }}>
-        <h1 style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--color-sidebar-text)', margin: 0 }}>
-          ATS
+      <div style={{ 
+        padding: isCollapsed ? '16px 12px' : '16px', 
+        borderBottom: '1px solid var(--color-sidebar-border)',
+        display: 'flex',
+        justifyContent: isCollapsed ? 'center' : 'flex-start'
+      }}>
+        <h1 style={{ 
+          fontSize: '18px', 
+          fontWeight: 'bold', 
+          color: 'var(--color-sidebar-text)', 
+          margin: 0,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden'
+        }}>
+          {isCollapsed ? 'A' : 'ATS'}
         </h1>
       </div>
 
       {/* Navigation */}
-      <nav style={{ padding: '8px' }}>
+      <nav style={{ padding: isCollapsed ? '8px 4px' : '8px' }}>
         {sidebarItems.map((item) => {
           const Icon = item.icon;
           const isActive = activePage === item.id;
@@ -89,11 +110,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
               key={item.id}
               onClick={() => handleItemClick(item.id)}
               className={`sidebar-item ${isActive ? 'active' : ''}`}
+              title={isCollapsed ? item.label : undefined}
               style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
+                justifyContent: isCollapsed ? 'center' : 'flex-start',
                 gap: '12px',
-                padding: '12px 16px',
+                padding: isCollapsed ? '12px' : '12px 16px',
                 color: 'var(--color-sidebar-text)',
                 backgroundColor: isActive ? 'var(--color-sidebar-active)' : 'transparent',
                 borderRadius: '6px',
@@ -115,8 +138,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 }
               }}
             >
-              <Icon style={{ width: '20px', height: '20px' }} />
-              <span>{item.label}</span>
+              <Icon style={{ width: '20px', height: '20px', flexShrink: 0 }} />
+              {showLabels && <span style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>{item.label}</span>}
             </button>
           );
         })}

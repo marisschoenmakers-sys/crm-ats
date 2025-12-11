@@ -1,23 +1,39 @@
-import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { CompanyList } from '../components/CompanyList';
-import { companies } from '../utils/mockCompanies';
+import { getCompanies } from '../api/companies';
+import { CompanyDetailModal } from '../components/CompanyDetailModal';
 import type { Company } from '../types/company';
 
 interface CompaniesPageProps {
   onChangePage?: (page: 'companies' | 'companyDetail') => void;
 }
 
-export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) => {
-  const navigate = useNavigate();
+export const CompaniesPage: React.FC<CompaniesPageProps> = () => {
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSector, setSelectedSector] = useState('');
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
+
+  // Load companies from Supabase
+  useEffect(() => {
+    async function loadCompanies() {
+      const { data, error } = await getCompanies();
+      if (error) {
+        console.error('Error loading companies:', error);
+      } else {
+        setCompanies((data || []) as Company[]);
+      }
+      setLoading(false);
+    }
+    loadCompanies();
+  }, []);
 
   // Get unique sectors for filter dropdown
   const sectors = useMemo(() => {
     const uniqueSectors = [...new Set(companies.map(c => c.sector).filter(Boolean))];
     return uniqueSectors as string[];
-  }, []);
+  }, [companies]);
 
   // Filter companies based on search and sector
   const filteredCompanies = useMemo(() => {
@@ -27,15 +43,15 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
       const matchesSector = !selectedSector || company.sector === selectedSector;
       return matchesSearch && matchesSector;
     });
-  }, [searchTerm, selectedSector]);
+  }, [companies, searchTerm, selectedSector]);
 
   const handleCompanySelect = (company: Company) => {
-    if (onChangePage) {
-      onChangePage('companyDetail');
-    } else {
-      navigate(`/companies/${company.id}`);
-    }
+    setSelectedCompanyId(company.id);
   };
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedCompanyId(null);
+  }, []);
 
   // Show companies list
   return (
@@ -152,6 +168,14 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onChangePage }) =>
         companies={filteredCompanies} 
         onSelectCompany={handleCompanySelect}
       />
+
+      {/* Company Detail Modal */}
+      {selectedCompanyId && (
+        <CompanyDetailModal
+          companyId={selectedCompanyId}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };

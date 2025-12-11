@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreateMenu, type CreateType } from './CreateMenu';
 import { CreateModal } from './CreateModal';
 import { useTheme } from '../theme/ThemeProvider';
+import { globalSearch, type SearchResult as SupabaseSearchResult } from '../api/search';
 import { candidates } from '../utils/mockCandidates';
 import { vacancies } from '../utils/mockVacancies';
+import { isSupabaseConfigured } from '../lib/supabase';
 
 interface SearchResult {
   id: string;
-  type: 'candidate' | 'vacancy' | 'talentpool';
+  type: 'candidate' | 'vacancy' | 'talentpool' | 'company';
   title: string;
   subtitle: string;
   url: string;
@@ -18,14 +20,12 @@ interface TopbarProps {
   onSearch?: (query: string) => void;
   onNotificationClick?: () => void;
   userName?: string;
-  onMobileMenuToggle?: () => void;
 }
 
 export const Topbar: React.FC<TopbarProps> = ({
   onSearch,
   onNotificationClick,
-  userName = 'Maris',
-  onMobileMenuToggle
+  userName = 'Maris'
 }) => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
@@ -36,7 +36,9 @@ export const Topbar: React.FC<TopbarProps> = ({
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
   // Close search results when clicking outside
@@ -51,6 +53,18 @@ export const Topbar: React.FC<TopbarProps> = ({
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Cmd+K to focus search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Search function
@@ -119,8 +133,8 @@ export const Topbar: React.FC<TopbarProps> = ({
       if (aExact !== bExact) return aExact - bExact;
       
       // Then by type (vacancies first when searching company)
-      const typePriority = { vacancy: 0, candidate: 1, talentpool: 2 };
-      return typePriority[a.type] - typePriority[b.type];
+      const typePriority: Record<string, number> = { vacancy: 0, candidate: 1, talentpool: 2, company: 3 };
+      return (typePriority[a.type] || 4) - (typePriority[b.type] || 4);
     }).slice(0, 10); // Limit to 10 results
   };
 
@@ -134,14 +148,44 @@ export const Topbar: React.FC<TopbarProps> = ({
     // In a real app, this would add to state/API
   };
 
+  // Debounced Supabase search
+  const searchSupabase = useCallback(async (query: string) => {
+    if (!isSupabaseConfigured || query.length < 2) return;
+    
+    setIsSearching(true);
+    try {
+      const supabaseResults = await globalSearch(query);
+      // Convert Supabase results to local format and merge
+      const convertedResults: SearchResult[] = supabaseResults.map((r: SupabaseSearchResult) => ({
+        ...r,
+        type: r.type as 'candidate' | 'vacancy' | 'talentpool' | 'company'
+      }));
+      
+      if (convertedResults.length > 0) {
+        setSearchResults(convertedResults);
+        setShowSearchResults(true);
+      }
+    } catch (error) {
+      console.error('Supabase search error:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  }, []);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
     onSearch?.(value);
     
-    const results = performSearch(value);
-    setSearchResults(results);
-    setShowSearchResults(results.length > 0 || value.length >= 2);
+    // First show mock results immediately
+    const mockResults = performSearch(value);
+    setSearchResults(mockResults);
+    setShowSearchResults(mockResults.length > 0 || value.length >= 2);
+    
+    // Then search Supabase (will update results when ready)
+    if (isSupabaseConfigured && value.length >= 2) {
+      searchSupabase(value);
+    }
   };
 
   const handleResultClick = (result: SearchResult) => {
@@ -151,63 +195,70 @@ export const Topbar: React.FC<TopbarProps> = ({
     setShowSearchResults(false);
   };
 
-  const getTypeIcon = (type: 'candidate' | 'vacancy' | 'talentpool') => {
+  const getTypeIcon = (type: 'candidate' | 'vacancy' | 'talentpool' | 'company') => {
     switch (type) {
       case 'candidate': return '👤';
       case 'vacancy': return '💼';
       case 'talentpool': return '🎯';
+      case 'company': return '🏢';
     }
   };
 
-  const getTypeLabel = (type: 'candidate' | 'vacancy' | 'talentpool') => {
+  const getTypeLabel = (type: 'candidate' | 'vacancy' | 'talentpool' | 'company') => {
     switch (type) {
       case 'candidate': return 'Kandidaat';
       case 'vacancy': return 'Vacature';
       case 'talentpool': return 'Talentpool';
+      case 'company': return 'Bedrijf';
     }
   };
 
   
   return (
     <div className="topbar">
-      {/* Mobile Menu Button */}
-      <button
-        onClick={onMobileMenuToggle}
-        style={{
-          display: 'none',
-          padding: '8px',
-          backgroundColor: 'transparent',
-          border: 'none',
-          borderRadius: '6px',
-          cursor: 'pointer'
-        }}
-        className="mobile-menu-button"
-        aria-label="Menu"
-      >
-        <svg 
-          width="20" 
-          height="20" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="var(--color-text)" 
-          strokeWidth="2"
-        >
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-
       {/* Search Field with Results Dropdown */}
-      <div ref={searchRef} style={{ flex: 1, maxWidth: '600px', position: 'relative' }}>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          onFocus={() => searchResults.length > 0 && setShowSearchResults(true)}
-          placeholder="Zoek in kandidaten, vacatures, talentpools..."
-          className="search-input"
-        />
+      <div ref={searchRef} style={{ width: '350px', maxWidth: '350px', position: 'relative', marginLeft: '120px', marginRight: 'auto' }}>
+        <div style={{ position: 'relative', width: '100%' }}>
+          <input
+            ref={searchInputRef}
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onFocus={() => searchResults.length > 0 && setShowSearchResults(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                setShowSearchResults(false);
+                setSearchQuery('');
+                searchInputRef.current?.blur();
+              }
+            }}
+            placeholder="Zoek in kandidaten, vacatures, talentpools..."
+            className="search-input"
+            style={{ 
+              width: '100%', 
+              paddingRight: '60px',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap'
+            }}
+          />
+          <kbd style={{
+            position: 'absolute',
+            right: '12px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            padding: '4px 8px',
+            fontSize: '11px',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            backgroundColor: 'var(--color-bg-secondary)',
+            border: '1px solid var(--color-border)',
+            borderRadius: '4px',
+            color: 'var(--color-text-muted)',
+            pointerEvents: 'none'
+          }}>
+            ⌘K
+          </kbd>
+        </div>
         
         {/* Search Results Dropdown */}
         {showSearchResults && (
@@ -549,7 +600,13 @@ export const Topbar: React.FC<TopbarProps> = ({
               </button>
               
               <button
-                onClick={() => {
+                onClick={async () => {
+                  // Supabase logout
+                  const { supabase } = await import('../lib/supabase');
+                  if (supabase) {
+                    await supabase.auth.signOut();
+                  }
+                  // Fallback: also clear localStorage
                   localStorage.removeItem('ats_logged_in');
                   window.location.reload();
                 }}

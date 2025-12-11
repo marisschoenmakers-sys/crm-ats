@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CandidateFilterBar } from '../components/CandidateFilterBar';
 import { CandidateList } from '../components/CandidateList';
 import { getCandidates } from '../api/candidates';
 import CreateCandidateForm from '../components/CreateCandidateForm';
+import { CandidateDetailModal } from '../components/CandidateDetailModal';
 
 interface CandidatesPageProps {
   onChangePage?: (page: 'candidates' | 'candidateDetail') => void;
 }
 
 export const CandidatesPage: React.FC<CandidatesPageProps> = ({ onChangePage }) => {
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [candidates, setCandidates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [selectedCandidateId, setSelectedCandidateId] = useState<string | null>(null);
 
   // Load candidates from Supabase
   useEffect(() => {
@@ -48,12 +48,12 @@ export const CandidatesPage: React.FC<CandidatesPageProps> = ({ onChangePage }) 
   };
 
   const handleCandidateClick = (candidateId?: string) => {
-    if (onChangePage) {
-      onChangePage('candidateDetail');
-    } else {
-      navigate(`/candidates/${candidateId || '1'}`);
-    }
+    setSelectedCandidateId(candidateId || null);
   };
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedCandidateId(null);
+  }, []);
 
   return (
     <div>
@@ -157,6 +157,14 @@ export const CandidatesPage: React.FC<CandidatesPageProps> = ({ onChangePage }) 
         <CreateCandidateForm
           onClose={() => setShowCreateForm(false)}
           onSuccess={refreshCandidates}
+        />
+      )}
+
+      {/* Candidate Detail Modal */}
+      {selectedCandidateId && (
+        <CandidateDetailModal
+          candidateId={selectedCandidateId}
+          onClose={handleCloseModal}
         />
       )}
     </div>
